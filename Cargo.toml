@@ -4,6 +4,8 @@ version = "0.1.0"
 authors = ["Gosuke Miyashita <gosukenator@gmail.com>"]
 
 [dependencies]
+downcast-rs = "1.0.0"
+uname = "0.1.1"
 
 [lib]
 name = "specinfra"
