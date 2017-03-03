@@ -1,6 +1,10 @@
 [package]
-name = "libspecinfra"
+name = "specinfra"
 version = "0.1.0"
 authors = ["Gosuke Miyashita <gosukenator@gmail.com>"]
 
 [dependencies]
+
+[lib]
+name = "specinfra"
+crate-type = ["dylib", "rlib"]
