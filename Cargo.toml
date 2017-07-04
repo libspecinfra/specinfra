@@ -2,7 +2,9 @@
 name = "specinfra"
 version = "0.1.0"
 authors = ["Gosuke Miyashita <gosukenator@gmail.com>"]
-
+license = "MIT"
+homepage = "https://github.com/libspecinfra/specinfra"
+description = "This is the Rust implementation of Ruby specinfra gem"
 [dependencies]
 downcast-rs = "1.0.0"
 uname = "0.1.1"
