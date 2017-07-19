@@ -12,3 +12,9 @@ pub trait Backend: Debug {
     fn detect(&self, Box<Platform>) -> Option<Box<Platform>>;
     fn handle(&self, Box<HandleFunc>) -> Result<Output, Box<Error>>;
 }
+
+// Wrapper struct for FFI
+#[derive(Debug)]
+pub struct BackendWrapper {
+    pub backend: Box<Backend>,
+}

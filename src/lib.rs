@@ -17,6 +17,7 @@ pub mod handler;
 pub mod resource;
 pub mod provider;
 
+#[derive(Debug)]
 pub struct Specinfra<'a> {
     pub backend: &'a Backend,
     pub platform: Box<Platform>,
@@ -49,8 +50,31 @@ pub fn new(b: &Backend) -> Result<Specinfra, Box<Error>> {
     })
 }
 
-impl<'b> Specinfra<'b> {
+impl<'a> Specinfra<'a> {
     pub fn file(&self, name: &'static str) -> File {
         File::new(name, self.backend, &self.provider)
+    }
+}
+
+// Wrapper functions for FFI
+
+use backend::BackendWrapper;
+
+#[no_mangle]
+pub extern "C" fn specinfra_new<'a>(ptr: *const BackendWrapper) -> *mut Specinfra<'a> {
+    let b = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    Box::into_raw(Box::new(self::new(&*b.backend).unwrap()))
+}
+
+#[no_mangle]
+pub extern "C" fn specinfra_free(ptr: *mut Specinfra) {
+    if ptr.is_null() {
+        return;
+    }
+    unsafe {
+        Box::from_raw(ptr);
     }
 }

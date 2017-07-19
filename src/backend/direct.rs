@@ -21,3 +21,23 @@ impl Backend for Direct {
         (handle_func.inline)()
     }
 }
+
+// Wrapper functions for FFI
+
+use backend::BackendWrapper;
+
+#[no_mangle]
+pub extern "C" fn backend_direct_new() -> *mut BackendWrapper {
+    let b = BackendWrapper { backend: Box::new(Direct::new()) };
+    Box::into_raw(Box::new(b))
+}
+
+#[no_mangle]
+pub extern "C" fn backend_direct_free(ptr: *mut BackendWrapper) {
+    if ptr.is_null() {
+        return;
+    }
+    unsafe {
+        Box::from_raw(ptr);
+    }
+}
