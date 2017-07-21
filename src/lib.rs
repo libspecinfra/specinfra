@@ -61,7 +61,7 @@ impl<'a> Specinfra<'a> {
 use backend::BackendWrapper;
 
 #[no_mangle]
-pub extern "C" fn specinfra_new<'a>(ptr: *const BackendWrapper) -> *mut Specinfra<'a> {
+pub extern "C" fn specinfra_new<'a>(ptr: *const BackendWrapper) -> *const Specinfra<'a> {
     let b = unsafe {
         assert!(!ptr.is_null());
         &*ptr
