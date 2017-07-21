@@ -1,9 +1,13 @@
 #[macro_use]
 extern crate downcast_rs;
 extern crate uname;
+extern crate libc;
 
+use std::ffi::CStr;
 use std::error::Error;
 use std::fmt;
+
+use libc::c_char;
 
 use backend::Backend;
 use platform::detector::Detector;
@@ -77,4 +81,19 @@ pub extern "C" fn specinfra_free(ptr: *mut Specinfra) {
     unsafe {
         Box::from_raw(ptr);
     }
+}
+
+#[no_mangle]
+pub extern "C" fn specinfra_file(ptr: *const Specinfra, name: *const c_char) -> *const File {
+    let s = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    let name = unsafe {
+        assert!(!name.is_null());
+        CStr::from_ptr(name)
+    };
+
+    Box::into_raw(Box::new(s.file(name.to_str().unwrap())))
 }

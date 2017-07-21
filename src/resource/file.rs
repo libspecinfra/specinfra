@@ -2,6 +2,7 @@ use backend::Backend;
 use provider::Provider;
 use provider::Output;
 use std::error::Error;
+use libc::uint32_t;
 
 #[derive(Debug)]
 pub struct File<'a> {
@@ -24,4 +25,26 @@ impl<'a> File<'a> {
             .handle(self.provider.file.mode(self.name))
             .and_then(Output::to_u32)
     }
+}
+
+// Wrapper functions for FFI
+
+#[no_mangle]
+pub extern "C" fn resource_file_free(ptr: *mut File) {
+    if ptr.is_null() {
+        return;
+    }
+    unsafe {
+        Box::from_raw(ptr);
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_mode(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    f.mode().unwrap()
 }
