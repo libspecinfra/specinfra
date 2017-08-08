@@ -3,21 +3,11 @@ pub mod platforms;
 pub mod bsd;
 
 use std::fmt::Debug;
-use handler::Handler;
-use handler::inline::Inline;
 use provider;
 
 // See https://stackoverflow.com/questions/30353462/how-to-clone-a-struct-storing-a-trait-object
 pub trait Platform: Debug + PlatformClone {
     fn new() -> Self where Self: Sized;
-
-    fn detect(&self, h: &Box<Handler>) -> Option<Box<Platform>> {
-        if let Some(_) = h.downcast_ref::<Inline>() {
-            h.detect_platform(&|| self.detect_inline())
-        } else {
-            None
-        }
-    }
 
     fn detect_inline(&self) -> Option<Box<Platform>>;
 
