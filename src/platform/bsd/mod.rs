@@ -1,7 +1,7 @@
 pub mod darwin;
 
+use platform::base_platform::BasePlatform;
 use platform::platform::Platform;
-use platform::platforms::Platforms;
 use platform::bsd::darwin::Darwin;
 
 #[derive(Clone, Debug)]
@@ -10,7 +10,7 @@ pub struct Bsd {
     platforms: Vec<Box<Platform>>,
 }
 
-impl Platforms for Bsd {
+impl BasePlatform for Bsd {
     fn new() -> Bsd {
         Bsd {
             curr: 0,

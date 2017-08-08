@@ -1,4 +1,4 @@
 pub mod detector;
+pub mod base_platform;
 pub mod platform;
-pub mod platforms;
 pub mod bsd;
