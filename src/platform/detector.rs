@@ -1,4 +1,4 @@
-use platform::Platform;
+use platform::platform::Platform;
 use platform::platforms::Platforms;
 use backend::Backend;
 use platform::bsd;

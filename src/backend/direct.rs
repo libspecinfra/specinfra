@@ -1,9 +1,10 @@
+use std::result::Result;
+use std::error::Error;
+
 use backend::Backend;
 use provider;
-use std::result::Result;
 use provider::Output;
-use platform::Platform;
-use std::error::Error;
+use platform::platform::Platform;
 
 #[derive(Debug)]
 pub struct Direct;

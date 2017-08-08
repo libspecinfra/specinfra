@@ -1,5 +1,5 @@
 use handler::Handler;
-use platform::Platform;
+use platform::platform::Platform;
 
 #[derive(Debug)]
 pub struct Inline;

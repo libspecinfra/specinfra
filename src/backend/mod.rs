@@ -1,11 +1,12 @@
 pub mod direct;
 
 use std::fmt::Debug;
-use platform::Platform;
-use provider::HandleFunc;
-use provider::Output;
 use std::result::Result;
 use std::error::Error;
+
+use platform::platform::Platform;
+use provider::HandleFunc;
+use provider::Output;
 
 pub trait Backend: Debug {
     fn new() -> Self where Self: Sized;

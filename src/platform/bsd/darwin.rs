@@ -1,4 +1,4 @@
-use platform::Platform;
+use platform::platform::Platform;
 use uname;
 use provider;
 

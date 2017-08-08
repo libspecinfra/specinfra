@@ -9,7 +9,7 @@ use libc::c_char;
 
 use backend::Backend;
 use platform::detector::Detector;
-use platform::Platform;
+use platform::platform::Platform;
 use resource::file::File;
 use provider::Provider;
 

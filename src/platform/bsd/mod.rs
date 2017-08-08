@@ -1,6 +1,6 @@
 pub mod darwin;
 
-use platform::Platform;
+use platform::platform::Platform;
 use platform::platforms::Platforms;
 use platform::bsd::darwin::Darwin;
 
