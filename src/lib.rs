@@ -1,5 +1,3 @@
-#[macro_use]
-extern crate downcast_rs;
 extern crate uname;
 extern crate libc;
 

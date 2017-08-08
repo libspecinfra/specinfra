@@ -7,7 +7,6 @@ homepage = "https://github.com/libspecinfra/specinfra"
 description = "This is the Rust implementation of Ruby specinfra gem"
 
 [dependencies]
-downcast-rs = "1.0.0"
 uname = "0.1.1"
 libc = "0.2.24"
 
