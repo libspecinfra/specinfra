@@ -5,6 +5,7 @@ use backend::Backend;
 use provider;
 use provider::Output;
 use platform::platform::Platform;
+use platform::platforms::Platforms;
 
 #[derive(Debug)]
 pub struct Direct;
@@ -14,8 +15,15 @@ impl Backend for Direct {
         Direct
     }
 
-    fn detect(&self, p: Box<Platform>) -> Option<Box<Platform>> {
-        p.detect_inline()
+    fn detect_platform(&self) -> Option<Box<Platform>> {
+        let mut platforms = Platforms::new();
+        while let Some(p) = platforms.next() {
+            match p.detect_inline() {
+                Some(m) => return Some(m),
+                None => (),
+            };
+        }
+        None
     }
 
     fn handle(&self, handle_func: Box<provider::HandleFunc>) -> Result<Output, Box<Error>> {

@@ -8,7 +8,6 @@ use std::fmt;
 use libc::c_char;
 
 use backend::Backend;
-use platform::detector::Detector;
 use platform::platform::Platform;
 use resource::file::File;
 use provider::Provider;
@@ -42,8 +41,7 @@ impl fmt::Display for SpecinfraError {
 }
 
 pub fn new(b: &Backend) -> Result<Specinfra, Box<Error>> {
-    let mut d = Detector::new();
-    let p = try!(d.detect(b).ok_or(SpecinfraError));
+    let p = try!(b.detect_platform().ok_or(SpecinfraError));
     let provider = p.get_provider();
     Ok(Specinfra {
         backend: b,

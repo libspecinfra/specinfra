@@ -1,36 +1,24 @@
 use platform::platform::Platform;
 use platform::base_platform::BasePlatform;
-use backend::Backend;
 use platform::bsd;
 
-pub struct Detector {
+pub struct Platforms {
     curr: usize,
     base_platforms: Vec<Box<BasePlatform<Item = Box<Platform>>>>,
 }
 
-impl Detector {
-    pub fn new() -> Detector {
+impl Platforms {
+    pub fn new() -> Platforms {
         let mut p: Vec<Box<BasePlatform<Item = Box<Platform>>>> = Vec::new();
         p.push(Box::new(bsd::Bsd::new()));
-        Detector {
+        Platforms {
             curr: 0,
             base_platforms: p,
         }
     }
-
-    pub fn detect(&mut self, b: &Backend) -> Option<Box<Platform>> {
-        self.reset();
-        while let Some(p) = self.next() {
-            match b.detect(p) {
-                Some(x) => return Some(x),
-                None => (),
-            }
-        }
-        return None;
-    }
 }
 
-impl Iterator for Detector {
+impl Iterator for Platforms {
     type Item = Box<Platform>;
     fn next(&mut self) -> Option<Self::Item> {
         if self.curr < self.base_platforms.len() {
@@ -47,7 +35,7 @@ impl Iterator for Detector {
     }
 }
 
-impl Detector {
+impl Platforms {
     fn reset(&mut self) {
         self.curr = 0;
         for p in &mut self.base_platforms {

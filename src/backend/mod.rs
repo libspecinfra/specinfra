@@ -10,7 +10,7 @@ use provider::Output;
 
 pub trait Backend: Debug {
     fn new() -> Self where Self: Sized;
-    fn detect(&self, Box<Platform>) -> Option<Box<Platform>>;
+    fn detect_platform(&self) -> Option<Box<Platform>>;
     fn handle(&self, Box<HandleFunc>) -> Result<Output, Box<Error>>;
 }
 
