@@ -6,7 +6,7 @@ use provider;
 pub trait Platform: Debug + PlatformClone {
     fn new() -> Self where Self: Sized;
 
-    fn detect_inline(&self) -> Option<Box<Platform>>;
+    fn inline_detector(&self) -> Option<Box<Platform>>;
 
     fn get_provider(&self) -> Box<provider::Provider>;
 }

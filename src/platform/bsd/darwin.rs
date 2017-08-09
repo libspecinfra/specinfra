@@ -17,7 +17,7 @@ impl Platform for Darwin {
         }
     }
 
-    fn detect_inline(&self) -> Option<(Box<Platform>)> {
+    fn inline_detector(&self) -> Option<(Box<Platform>)> {
         let u = match uname::uname() {
             Ok(u) => u,
             Err(_) => return None,

@@ -18,7 +18,7 @@ impl Backend for Direct {
     fn detect_platform(&self) -> Option<Box<Platform>> {
         let mut platforms = Platforms::new();
         while let Some(p) = platforms.next() {
-            match p.detect_inline() {
+            match p.inline_detector() {
                 Some(m) => return Some(m),
                 None => (),
             };
