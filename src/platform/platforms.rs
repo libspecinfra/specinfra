@@ -34,12 +34,3 @@ impl Iterator for Platforms {
         }
     }
 }
-
-impl Platforms {
-    fn reset(&mut self) {
-        self.curr = 0;
-        for p in &mut self.base_platforms {
-            p.reset();
-        }
-    }
-}
