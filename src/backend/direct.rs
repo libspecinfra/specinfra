@@ -1,5 +1,7 @@
 use std::result::Result;
 use std::error::Error;
+use std::process::Command;
+use std::str;
 
 use backend::Backend;
 use provider;
@@ -22,12 +24,23 @@ impl Backend for Direct {
                 Some(m) => return Some(m),
                 None => (),
             };
+
+            match p.shell_detector(self) {
+                Some(m) => return Some(m),
+                None => (),
+            }
         }
         None
     }
 
     fn handle(&self, handle_func: Box<provider::HandleFunc>) -> Result<Output, Box<Error>> {
         (handle_func.inline)()
+    }
+
+    fn run_command(&self, c: &str, args: &[&str]) -> Result<String, Box<Error>> {
+        let out = try!(Command::new(c).args(args).output());
+        let res = try!(String::from_utf8(out.stdout));
+        Ok(res.trim().to_string())
     }
 }
 

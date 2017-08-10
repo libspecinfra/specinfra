@@ -1,7 +1,8 @@
-use platform::platform::Platform;
 use uname;
-use provider;
 
+use backend::Backend;
+use platform::platform::Platform;
+use provider;
 
 #[derive(Clone, Debug)]
 pub struct Darwin {
@@ -17,7 +18,7 @@ impl Platform for Darwin {
         }
     }
 
-    fn inline_detector(&self) -> Option<(Box<Platform>)> {
+    fn inline_detector(&self) -> Option<Box<Platform>> {
         let u = match uname::uname() {
             Ok(u) => u,
             Err(_) => return None,
@@ -27,6 +28,22 @@ impl Platform for Darwin {
             let d = Darwin {
                 name: u.sysname,
                 release: u.release,
+            };
+            Some(Box::new(d))
+        } else {
+            None
+        }
+    }
+
+    fn shell_detector(&self, b: &Backend) -> Option<Box<Platform>> {
+        let res = b.run_command("uname", &["-sr"]).unwrap();
+        let mut iter = res.split_whitespace();
+        let sysname = iter.next().unwrap();
+        if sysname == "Darwin" {
+            let release = iter.next().unwrap();
+            let d = Darwin {
+                name: sysname.to_string(),
+                release: release.to_string(),
             };
             Some(Box::new(d))
         } else {

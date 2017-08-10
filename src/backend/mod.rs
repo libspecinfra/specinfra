@@ -12,6 +12,7 @@ pub trait Backend: Debug {
     fn new() -> Self where Self: Sized;
     fn detect_platform(&self) -> Option<Box<Platform>>;
     fn handle(&self, Box<HandleFunc>) -> Result<Output, Box<Error>>;
+    fn run_command(&self, &str, &[&str]) -> Result<String, Box<Error>>;
 }
 
 // Wrapper struct for FFI
