@@ -4,13 +4,16 @@ use std::result::Result;
 use std::error::Error;
 use std::fmt;
 
+use backend::Backend;
+
 #[derive(Debug)]
 pub struct Provider {
     pub file: Box<file::File>,
 }
 
 pub struct HandleFunc {
-    pub inline: Box<Fn() -> Result<Output, Box<Error>>>,
+    pub inline: Option<Box<Fn() -> Result<Output, Box<Error>>>>,
+    pub shell: Option<Box<Fn(&Backend) -> Result<Output, Box<Error>>>>,
 }
 
 pub enum Output {

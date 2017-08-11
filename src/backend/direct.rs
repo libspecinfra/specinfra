@@ -3,6 +3,7 @@ use std::error::Error;
 use std::process::Command;
 use std::str;
 
+use SpecinfraError;
 use backend::Backend;
 use provider;
 use provider::Output;
@@ -34,11 +35,21 @@ impl Backend for Direct {
     }
 
     fn handle(&self, handle_func: Box<provider::HandleFunc>) -> Result<Output, Box<Error>> {
-        (handle_func.inline)()
+        match handle_func.inline {
+            Some(f) => return f(),
+            None => {}
+        };
+
+        match handle_func.shell {
+            Some(f) => return f(self),
+            None => {}
+        };
+
+        Err(Box::new(SpecinfraError))
     }
 
-    fn run_command(&self, c: &str, args: &[&str]) -> Result<String, Box<Error>> {
-        let out = try!(Command::new(c).args(args).output());
+    fn run_command(&self, c: &str) -> Result<String, Box<Error>> {
+        let out = try!(Command::new("sh").args(&["-c", c]).output());
         let res = try!(String::from_utf8(out.stdout));
         Ok(res.trim().to_string())
     }
