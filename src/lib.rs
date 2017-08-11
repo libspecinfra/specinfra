@@ -14,7 +14,6 @@ use provider::Provider;
 
 pub mod backend;
 pub mod platform;
-pub mod handler;
 pub mod resource;
 pub mod provider;
 
