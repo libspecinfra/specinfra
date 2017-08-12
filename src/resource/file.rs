@@ -4,7 +4,6 @@ use provider::Output;
 use std::error::Error;
 use libc::uint32_t;
 
-#[derive(Debug)]
 pub struct File<'a> {
     name: &'static str,
     backend: &'a Backend,

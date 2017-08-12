@@ -13,11 +13,13 @@ use platform::platforms::Platforms;
 #[derive(Debug)]
 pub struct Direct;
 
-impl Backend for Direct {
+impl Direct {
     fn new() -> Direct {
         Direct
     }
+}
 
+impl Backend for Direct {
     fn detect_platform(&self) -> Option<Box<Platform>> {
         let mut platforms = Platforms::new();
         while let Some(p) = platforms.next() {

@@ -17,7 +17,6 @@ pub mod platform;
 pub mod resource;
 pub mod provider;
 
-#[derive(Debug)]
 pub struct Specinfra<'a> {
     pub backend: &'a Backend,
     pub platform: Box<Platform>,

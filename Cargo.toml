@@ -9,6 +9,7 @@ description = "This is the Rust implementation of Ruby specinfra gem"
 [dependencies]
 uname = "0.1.1"
 libc = "0.2.24"
+ssh2 = "0.3.1"
 
 [lib]
 name = "specinfra"
