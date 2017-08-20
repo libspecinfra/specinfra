@@ -13,7 +13,7 @@ use platform::platforms::Platforms;
 pub struct Direct;
 
 impl Direct {
-    fn new() -> Direct {
+    pub fn new() -> Direct {
         Direct
     }
 }
