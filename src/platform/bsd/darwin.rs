@@ -2,9 +2,12 @@ use uname;
 
 use backend::Backend;
 use platform::platform::Platform;
-use provider;
+use provider::Provider;
+use provider::file::FileProvider;
+use provider::file::inline::posix::Posix;
+use provider::file::shell::bsd::Bsd;
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct Darwin {
     name: String,
     release: String,
@@ -51,7 +54,14 @@ impl Platform for Darwin {
         }
     }
 
-    fn get_provider(&self) -> Box<provider::Provider> {
-        Box::new(provider::Provider { file: Box::new(provider::file::posix::Posix) })
+    fn get_provider(&self) -> Box<Provider> {
+        let fp = FileProvider {
+            inline: Some(Box::new(Posix)),
+            shell: Some(Box::new(Bsd)),
+        };
+
+        let p = Provider { file: Box::new(fp) };
+
+        Box::new(p)
     }
 }

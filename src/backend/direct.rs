@@ -10,7 +10,6 @@ use provider::Output;
 use platform::platform::Platform;
 use platform::platforms::Platforms;
 
-#[derive(Debug)]
 pub struct Direct;
 
 impl Direct {

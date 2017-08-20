@@ -1,10 +1,8 @@
-use std::fmt::Debug;
-
 use provider;
 use backend::Backend;
 
 // See https://stackoverflow.com/questions/30353462/how-to-clone-a-struct-storing-a-trait-object
-pub trait Platform: Debug + PlatformClone {
+pub trait Platform: PlatformClone {
     fn new() -> Self where Self: Sized;
 
     fn inline_detector(&self) -> Option<Box<Platform>>;

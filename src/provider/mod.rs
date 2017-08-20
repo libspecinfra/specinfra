@@ -6,9 +6,8 @@ use std::fmt;
 
 use backend::Backend;
 
-#[derive(Debug)]
 pub struct Provider {
-    pub file: Box<file::File>,
+    pub file: Box<file::FileProvider>,
 }
 
 pub struct HandleFunc {

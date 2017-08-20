@@ -5,8 +5,8 @@ use std::result::Result;
 use std::error::Error;
 
 use platform::platform::Platform;
-use provider::HandleFunc;
 use provider::Output;
+use provider::HandleFunc;
 
 pub trait Backend {
     fn detect_platform(&self) -> Option<Box<Platform>>;

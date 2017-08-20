@@ -4,7 +4,7 @@ use platform::base_platform::BasePlatform;
 use platform::platform::Platform;
 use platform::bsd::darwin::Darwin;
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct Bsd {
     curr: usize,
     platforms: Vec<Box<Platform>>,
