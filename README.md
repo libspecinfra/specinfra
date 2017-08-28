@@ -8,11 +8,46 @@ Specinfra gem is a base library of [serverspec](http://serverspec.org/) .
 
 Specinfra gem is made of Ruby, so you cannot call the functions of specinfra from other languages.
 
-Libspecinfra project will provide binary libary and language bindings to call this library. So you will call the functions of specinfra from many languages.
+Libspecinfra project will provide binary library and language bindings to call this library. So you will be able to call the functions of specinfra from many languages.
 
 This project is in the phase of very beginning. If you have comments, questions and so on, feel free to post comments in GitHub Issues.
 
 [Here](http://atl.recruit-tech.co.jp/blog/4339/) is the Japanese post about this project.
+
+## Language bindings
+
+We provide only Ruby and mruby bindings currently.
+
+* [Ruby](https://github.com/libspecinfra/libspecinfra-ruby)
+* [mruby](https://github.com/libspecinfra/mruby-libspecinfra)
+
+Other languages will be supported.
+
+## Sample code
+
+This is a sample mruby code to get the permission of `/etc/passwd` of local host:
+
+```ruby
+b = Libspecinfra::Backend::Direct.new()
+s = Libspecinfra::Specinfra.new(b)
+f = s.file("/etc/passwd")
+
+printf("%#o", f.mode)
+```
+
+This is a sample mruby code to get the permission of `/etc/passwd` via SSH:
+
+
+```ruby
+b = Libspecinfra::Backend::SSH.new("localhost")
+s = Libspecinfra::Specinfra.new(b)
+f = s.file("/etc/passwd")
+
+printf("%#o", f.mode)
+```
+
+Other language examples are [here](https://github.com/libspecinfra/examples) .
+
 
 ## TODO
 
