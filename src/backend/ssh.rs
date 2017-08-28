@@ -1,5 +1,8 @@
 extern crate ssh2;
 
+use libc::c_char;
+use std::ffi::CStr;
+
 use std::result::Result;
 use std::error::Error;
 use std::str;
@@ -77,5 +80,32 @@ impl Backend for SSH {
         let mut s = String::new();
         chan.read_to_string(&mut s).unwrap();
         Ok(s.trim().to_string())
+    }
+}
+
+// Wrapper functions for FFI
+
+use backend::BackendWrapper;
+
+#[no_mangle]
+pub extern "C" fn backend_ssh_new(host: *const c_char) -> *mut BackendWrapper {
+    let host = unsafe {
+        assert!(!host.is_null());
+        CStr::from_ptr(host)
+    };
+    let host_str = host.to_str().unwrap();
+
+    let s = SSHBuilder::new().hostname(host_str).finalize().unwrap();
+    let b = BackendWrapper { backend: Box::new(s) };
+    Box::into_raw(Box::new(b))
+}
+
+#[no_mangle]
+pub extern "C" fn backend_ssh_free(ptr: *mut BackendWrapper) {
+    if ptr.is_null() {
+        return;
+    }
+    unsafe {
+        Box::from_raw(ptr);
     }
 }
