@@ -1,6 +1,6 @@
 [package]
 name = "specinfra"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["Gosuke Miyashita <gosukenator@gmail.com>"]
 license = "MIT"
 homepage = "https://github.com/libspecinfra/specinfra"
@@ -8,7 +8,7 @@ description = "This is the Rust implementation of Ruby specinfra gem"
 
 [dependencies]
 uname = "0.1.1"
-libc = "0.2.24"
+libc = "0.2.30"
 users = "0.5.0"
 ssh2 = "0.3.1"
 md5 = "0.3.5"
