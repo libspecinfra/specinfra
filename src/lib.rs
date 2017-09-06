@@ -1,5 +1,9 @@
 extern crate uname;
 extern crate libc;
+extern crate users;
+extern crate md5;
+extern crate sha2;
+extern crate nix;
 
 use std::ffi::CStr;
 use std::error::Error;
