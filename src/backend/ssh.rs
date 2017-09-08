@@ -10,7 +10,6 @@ use std::net::TcpStream;
 use std::env;
 use std::io::prelude::*;
 
-use SpecinfraError;
 use backend::Backend;
 use provider;
 use provider::Output;
@@ -71,7 +70,7 @@ impl Backend for SSH {
             None => {}
         };
 
-        Err(Box::new(SpecinfraError))
+        Err(Box::new(provider::error::Error))
     }
 
     fn run_command(&self, c: &str) -> Result<String, Box<Error>> {
