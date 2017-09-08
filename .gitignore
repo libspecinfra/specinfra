@@ -3,3 +3,6 @@ Cargo.lock
 .idea/
 specinfra.iml
 *.bk
+.vagrant
+*.log
+
