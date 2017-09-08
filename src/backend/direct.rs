@@ -3,7 +3,6 @@ use std::error::Error;
 use std::process::Command;
 use std::str;
 
-use SpecinfraError;
 use backend::Backend;
 use provider;
 use provider::Output;
@@ -46,7 +45,7 @@ impl Backend for Direct {
             None => {}
         };
 
-        Err(Box::new(SpecinfraError))
+        Err(Box::new(provider::error::Error))
     }
 
     fn run_command(&self, c: &str) -> Result<String, Box<Error>> {
