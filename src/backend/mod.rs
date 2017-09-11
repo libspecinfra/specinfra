@@ -1,17 +1,18 @@
 pub mod direct;
 pub mod ssh;
+pub mod error;
 
 use std::result::Result;
-use std::error::Error;
 
 use platform::platform::Platform;
 use provider::Output;
 use provider::HandleFunc;
+use provider;
 
 pub trait Backend {
     fn detect_platform(&self) -> Option<Box<Platform>>;
-    fn handle(&self, Box<HandleFunc>) -> Result<Output, Box<Error>>;
-    fn run_command(&self, &str) -> Result<String, Box<Error>>;
+    fn handle(&self, Box<HandleFunc>) -> Result<Output, provider::error::Error>;
+    fn run_command(&self, &str) -> Result<String, error::Error>;
 }
 
 // Wrapper struct for FFI

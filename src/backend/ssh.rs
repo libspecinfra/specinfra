@@ -4,12 +4,13 @@ use libc::c_char;
 use std::ffi::CStr;
 
 use std::result::Result;
-use std::error::Error;
 use std::str;
 use std::net::TcpStream;
 use std::env;
 use std::io::prelude::*;
 
+use backend;
+use backend::error::Error;
 use backend::Backend;
 use provider;
 use provider::Output;
@@ -35,7 +36,7 @@ impl SSHBuilder {
         self
     }
 
-    pub fn finalize(self) -> Result<SSH, Box<Error>> {
+    pub fn finalize(self) -> Result<SSH, Error> {
         let hostname = self.hostname.unwrap();
         let remote_addr = hostname + ":22";
         let tcp = try!(TcpStream::connect(remote_addr));
@@ -64,16 +65,18 @@ impl Backend for SSH {
         None
     }
 
-    fn handle(&self, handle_func: Box<provider::HandleFunc>) -> Result<Output, Box<Error>> {
+    fn handle(&self,
+              handle_func: Box<provider::HandleFunc>)
+              -> Result<Output, provider::error::Error> {
         match handle_func.shell {
             Some(f) => return f(self),
             None => {}
         };
 
-        Err(Box::new(provider::error::Error))
+        Err(From::from(provider::error::HandlerFuncNotFound))
     }
 
-    fn run_command(&self, c: &str) -> Result<String, Box<Error>> {
+    fn run_command(&self, c: &str) -> Result<String, backend::error::Error> {
         let mut chan = try!(self.session.channel_session());
         chan.exec(c).unwrap();
         let mut s = String::new();
