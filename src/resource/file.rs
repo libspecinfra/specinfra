@@ -1,7 +1,7 @@
 use backend::Backend;
+use provider::error;
 use provider::Provider;
 use provider::Output;
-use std::error::Error;
 use libc::uint32_t;
 
 pub struct File<'a> {
@@ -19,7 +19,7 @@ impl<'a> File<'a> {
         }
     }
 
-    pub fn mode(&self) -> Result<u32, Box<Error>> {
+    pub fn mode(&self) -> Result<u32, error::Error> {
         self.backend
             .handle(self.provider.file.mode(self.name))
             .and_then(Output::to_u32)

@@ -1,8 +1,8 @@
 use std::result::Result;
-use std::error::Error;
 use std::process::Command;
 use std::str;
 
+use backend;
 use backend::Backend;
 use provider;
 use provider::Output;
@@ -34,7 +34,9 @@ impl Backend for Direct {
         None
     }
 
-    fn handle(&self, handle_func: Box<provider::HandleFunc>) -> Result<Output, Box<Error>> {
+    fn handle(&self,
+              handle_func: Box<provider::HandleFunc>)
+              -> Result<Output, provider::error::Error> {
         match handle_func.inline {
             Some(f) => return f(),
             None => {}
@@ -45,10 +47,10 @@ impl Backend for Direct {
             None => {}
         };
 
-        Err(Box::new(provider::error::Error))
+        Err(From::from(provider::error::HandlerFuncNotFound))
     }
 
-    fn run_command(&self, c: &str) -> Result<String, Box<Error>> {
+    fn run_command(&self, c: &str) -> Result<String, backend::error::Error> {
         let out = try!(Command::new("sh").args(&["-c", c]).output());
         let res = try!(String::from_utf8(out.stdout));
         Ok(res.trim().to_string())

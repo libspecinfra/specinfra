@@ -1,11 +1,11 @@
-use std::error::Error;
+use provider::error::Error;
 use provider::Output;
 use backend::Backend;
 
 // See https://users.rust-lang.org/t/solved-is-it-possible-to-clone-a-boxed-trait-object/1714/6
 
 pub trait ShellProvider {
-    fn mode(&self, &str, &Backend) -> Result<Output, Box<Error>>;
+    fn mode(&self, &str, &Backend) -> Result<Output, Error>;
     fn box_clone(&self) -> Box<ShellProvider>;
 }
 

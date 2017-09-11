@@ -1,7 +1,7 @@
 use std::result::Result;
-use std::error::Error;
 
 use backend::Backend;
+use provider::error::Error;
 use provider::Output;
 use provider::file::shell::ShellProvider;
 
@@ -9,7 +9,7 @@ use provider::file::shell::ShellProvider;
 pub struct Bsd;
 
 impl ShellProvider for Bsd {
-    fn mode(&self, name: &str, b: &Backend) -> Result<Output, Box<Error>> {
+    fn mode(&self, name: &str, b: &Backend) -> Result<Output, Error> {
         let c = format!("stat -f%Lp {}", name);
         let res = try!(b.run_command(&c));
         let m = try!(u32::from_str_radix(&res, 8));
