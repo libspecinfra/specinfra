@@ -68,12 +68,7 @@ impl Backend for SSH {
     fn handle(&self,
               handle_func: Box<provider::HandleFunc>)
               -> Result<Output, provider::error::Error> {
-        match handle_func.shell {
-            Some(f) => return f(self),
-            None => {}
-        };
-
-        Err(From::from(provider::error::HandleFuncNotDefined))
+        (handle_func.shell)(self)
     }
 
     fn run_command(&self, c: &str) -> Result<String, backend::error::Error> {
