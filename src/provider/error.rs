@@ -10,7 +10,7 @@ use provider::OutputError;
 
 #[derive(Debug)]
 pub enum Error {
-    HandlerFuncNotFound(HandlerFuncNotFound),
+    HandleFuncNotDefined(HandleFuncNotDefined),
     Nix(nix::Error),
     Io(io::Error),
     String(StringError),
@@ -22,7 +22,7 @@ pub enum Error {
 impl error::Error for Error {
     fn description(&self) -> &str {
         match *self {
-            Error::HandlerFuncNotFound(ref err) => err.description(),
+            Error::HandleFuncNotDefined(ref err) => err.description(),
             Error::Nix(ref err) => err.description(),
             Error::Io(ref err) => err.description(),
             Error::String(ref err) => err.description(),
@@ -36,7 +36,7 @@ impl error::Error for Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            Error::HandlerFuncNotFound(ref err) => err.fmt(f),
+            Error::HandleFuncNotDefined(ref err) => err.fmt(f),
             Error::Nix(ref err) => err.fmt(f),
             Error::Io(ref err) => err.fmt(f),
             Error::String(ref err) => err.fmt(f),
@@ -78,23 +78,23 @@ impl From<backend::error::Error> for Error {
 }
 
 #[derive(Debug)]
-pub struct HandlerFuncNotFound;
+pub struct HandleFuncNotDefined;
 
-impl error::Error for HandlerFuncNotFound {
+impl error::Error for HandleFuncNotDefined {
     fn description(&self) -> &str {
         "HandlerFunc not found"
     }
 }
 
-impl fmt::Display for HandlerFuncNotFound {
+impl fmt::Display for HandleFuncNotDefined {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "HandlerFunc not found")
     }
 }
 
-impl From<HandlerFuncNotFound> for Error {
-    fn from(err: HandlerFuncNotFound) -> Error {
-        Error::HandlerFuncNotFound(err)
+impl From<HandleFuncNotDefined> for Error {
+    fn from(err: HandleFuncNotDefined) -> Error {
+        Error::HandleFuncNotDefined(err)
     }
 }
 

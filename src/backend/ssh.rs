@@ -73,7 +73,7 @@ impl Backend for SSH {
             None => {}
         };
 
-        Err(From::from(provider::error::HandlerFuncNotFound))
+        Err(From::from(provider::error::HandleFuncNotDefined))
     }
 
     fn run_command(&self, c: &str) -> Result<String, backend::error::Error> {

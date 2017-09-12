@@ -24,6 +24,18 @@ impl<'a> File<'a> {
             .handle(self.provider.file.mode(self.name))
             .and_then(Output::to_u32)
     }
+
+    pub fn is_file(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.file.is_file(self.name))
+            .and_then(Output::to_bool)
+    }
+
+    pub fn exist(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.file.exist(self.name))
+            .and_then(Output::to_bool)
+    }
 }
 
 // Wrapper functions for FFI
