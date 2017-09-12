@@ -39,6 +39,32 @@ impl FileProvider {
 
         Box::new(handle_func)
     }
+
+    pub fn is_file(&self, name: &'static str) -> Box<HandleFunc> {
+        let mut handle_func = HandleFunc {
+            inline: None,
+            shell: None,
+        };
+
+        handle_func.inline = match self.inline {
+            Some(ref i) => {
+                let c = i.clone();
+                Some(Box::new(move || c.is_file(name)))
+            }
+            None => None,
+        };
+
+        // handle_func.shell = match self.shell {
+        // Some(ref s) => {
+        // let c = s.clone();
+        // Some(Box::new(move |b| c.is_file(name, b)))
+        // }
+        // None => None,
+        // };
+        //
+
+        Box::new(handle_func)
+    }
 }
 
 pub mod inline;
