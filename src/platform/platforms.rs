@@ -1,6 +1,7 @@
 use platform::platform::Platform;
 use platform::base_platform::BasePlatform;
 use platform::bsd;
+use platform::linux;
 
 pub struct Platforms {
     curr: usize,
@@ -11,6 +12,8 @@ impl Platforms {
     pub fn new() -> Platforms {
         let mut p: Vec<Box<BasePlatform<Item = Box<Platform>>>> = Vec::new();
         p.push(Box::new(bsd::Bsd::new()));
+        p.push(Box::new(linux::Linux::new()));
+
         Platforms {
             curr: 0,
             base_platforms: p,
