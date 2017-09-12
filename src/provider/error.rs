@@ -82,13 +82,13 @@ pub struct HandleFuncNotDefined;
 
 impl error::Error for HandleFuncNotDefined {
     fn description(&self) -> &str {
-        "HandlerFunc not found"
+        "HandleFunc not found"
     }
 }
 
 impl fmt::Display for HandleFuncNotDefined {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "HandlerFunc not found")
+        write!(f, "HandleFunc not found")
     }
 }
 

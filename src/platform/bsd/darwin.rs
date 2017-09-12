@@ -56,8 +56,8 @@ impl Platform for Darwin {
 
     fn get_provider(&self) -> Box<Provider> {
         let fp = FileProvider {
-            inline: Some(Box::new(Posix)),
-            shell: Some(Box::new(Bsd)),
+            inline: Box::new(Posix),
+            shell: Box::new(Bsd),
         };
 
         let p = Provider { file: Box::new(fp) };

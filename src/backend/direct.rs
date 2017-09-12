@@ -4,7 +4,8 @@ use std::str;
 
 use backend;
 use backend::Backend;
-use provider;
+use provider::error::Error;
+use provider::HandleFunc;
 use provider::Output;
 use platform::platform::Platform;
 use platform::platforms::Platforms;
@@ -34,20 +35,8 @@ impl Backend for Direct {
         None
     }
 
-    fn handle(&self,
-              handle_func: Box<provider::HandleFunc>)
-              -> Result<Output, provider::error::Error> {
-        match handle_func.inline {
-            Some(f) => return f(),
-            None => {}
-        };
-
-        match handle_func.shell {
-            Some(f) => return f(self),
-            None => {}
-        };
-
-        Err(From::from(provider::error::HandleFuncNotDefined))
+    fn handle(&self, handle_func: Box<HandleFunc>) -> Result<Output, Error> {
+        (handle_func.inline)().or_else(|_| (handle_func.shell)(self))
     }
 
     fn run_command(&self, c: &str) -> Result<String, backend::error::Error> {

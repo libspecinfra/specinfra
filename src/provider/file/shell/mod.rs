@@ -20,3 +20,4 @@ impl Clone for Box<ShellProvider> {
 }
 
 pub mod bsd;
+pub mod null;

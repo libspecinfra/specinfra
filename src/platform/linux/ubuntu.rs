@@ -7,6 +7,7 @@ use platform::platform::Platform;
 use provider::Provider;
 use provider::file::FileProvider;
 use provider::file::inline::posix::Posix;
+use provider::file::shell::null::Null;
 
 #[derive(Clone)]
 pub struct Ubuntu {
@@ -50,8 +51,8 @@ impl Platform for Ubuntu {
 
     fn get_provider(&self) -> Box<Provider> {
         let fp = FileProvider {
-            inline: Some(Box::new(Posix)),
-            shell: None,
+            inline: Box::new(Posix),
+            shell: Box::new(Null),
         };
 
         let p = Provider { file: Box::new(fp) };

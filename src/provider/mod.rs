@@ -12,8 +12,8 @@ pub struct Provider {
 }
 
 pub struct HandleFunc {
-    pub inline: Option<Box<Fn() -> Result<Output, error::Error>>>,
-    pub shell: Option<Box<Fn(&Backend) -> Result<Output, error::Error>>>,
+    pub inline: Box<Fn() -> Result<Output, error::Error>>,
+    pub shell: Box<Fn(&Backend) -> Result<Output, error::Error>>,
 }
 
 pub enum Output {
