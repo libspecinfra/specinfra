@@ -9,5 +9,5 @@ fn it_works() {
     let s = specinfra::new(&b).unwrap();
     let file = s.file("/etc/passwd");
 
-    assert_eq!(0o644, file.mode().unwrap())
+    assert_eq!(file.mode().unwrap(), 0o644);
 }
