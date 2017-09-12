@@ -23,6 +23,15 @@ impl FileProvider {
             shell: Box::new(move |b| s.mode(name, b)),
         })
     }
+
+    pub fn is_file(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.is_file(name)),
+            shell: Box::new(move |b| s.is_file(name, b)),
+        })
+    }
 }
 
 pub mod inline;
