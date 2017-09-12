@@ -54,14 +54,13 @@ impl FileProvider {
             None => None,
         };
 
-        // handle_func.shell = match self.shell {
-        // Some(ref s) => {
-        // let c = s.clone();
-        // Some(Box::new(move |b| c.is_file(name, b)))
-        // }
-        // None => None,
-        // };
-        //
+        handle_func.shell = match self.shell {
+            Some(ref s) => {
+                let c = s.clone();
+                Some(Box::new(move |b| c.is_file(name, b)))
+            }
+            None => None,
+        };
 
         Box::new(handle_func)
     }
