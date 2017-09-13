@@ -2,6 +2,13 @@ use provider::HandleFunc;
 use provider::file::inline::InlineProvider;
 use provider::file::shell::ShellProvider;
 
+pub enum Whom {
+    Owner,
+    Group,
+    Others,
+    User(String),
+}
+
 pub struct FileProvider {
     pub inline: Box<InlineProvider>,
     pub shell: Box<ShellProvider>,
@@ -129,6 +136,15 @@ impl FileProvider {
         Box::new(HandleFunc {
             inline: Box::new(move || i.linked_to(name)),
             shell: Box::new(move |b| s.linked_to(name, b)),
+        })
+    }
+
+    pub fn is_readable(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.is_readable(name, None)),
+            shell: Box::new(move |b| s.is_readable(name, None, b)),
         })
     }
 }

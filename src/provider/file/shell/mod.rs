@@ -1,5 +1,7 @@
 use provider::error::Error;
 use provider::error::HandleFuncNotDefined;
+use provider::file::Whom;
+
 use provider::Output;
 use backend::Backend;
 
@@ -55,6 +57,10 @@ pub trait ShellProvider {
     }
 
     fn linked_to(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn is_readable(&self, &str, Option<&Whom>, &Backend) -> Result<Output, Error> {
         Err(From::from(HandleFuncNotDefined))
     }
 

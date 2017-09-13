@@ -96,6 +96,12 @@ impl<'a> File<'a> {
             .handle(self.provider.file.linked_to(self.name))
             .and_then(Output::to_string)
     }
+
+    pub fn is_readable(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.file.is_readable(self.name))
+            .and_then(Output::to_bool)
+    }
 }
 
 // Wrapper functions for FFI

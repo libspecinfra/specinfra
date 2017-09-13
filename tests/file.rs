@@ -23,6 +23,8 @@ fn file_resource() {
 
     let group = file.group().unwrap();
     assert!(group == "root" || group == "wheel");
+
+    assert_eq!(file.is_readable().unwrap(), true);
 }
 
 #[test]
