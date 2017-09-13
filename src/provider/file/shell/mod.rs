@@ -1,5 +1,7 @@
 use provider::error::Error;
 use provider::error::HandleFuncNotDefined;
+use provider::file::Whom;
+
 use provider::Output;
 use backend::Backend;
 
@@ -7,6 +9,74 @@ use backend::Backend;
 
 pub trait ShellProvider {
     fn mode(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn size(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn is_file(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn is_directory(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn is_block_device(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn is_character_device(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn is_pipe(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn is_socket(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn is_symlink(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn exist(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn contents(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn owner(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn group(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn linked_to(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn is_readable(&self, &str, Option<&Whom>, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn is_writable(&self, &str, Option<&Whom>, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn md5sum(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn sha256sum(&self, &str, &Backend) -> Result<Output, Error> {
         Err(From::from(HandleFuncNotDefined))
     }
 

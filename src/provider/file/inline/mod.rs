@@ -1,13 +1,8 @@
 use provider::Output;
 use provider::error::Error;
+use provider::file::Whom;
 
 // See https://users.rust-lang.org/t/solved-is-it-possible-to-clone-a-boxed-trait-object/1714/6
-pub enum Whom {
-    Owner,
-    Group,
-    Others,
-    User(String),
-}
 
 pub trait InlineProvider {
     fn is_file(&self, &str) -> Result<Output, Error>;
