@@ -122,6 +122,15 @@ impl FileProvider {
             shell: Box::new(move |b| s.group(name, b)),
         })
     }
+
+    pub fn linked_to(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.linked_to(name)),
+            shell: Box::new(move |b| s.linked_to(name, b)),
+        })
+    }
 }
 
 pub mod inline;

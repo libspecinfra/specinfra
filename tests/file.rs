@@ -24,3 +24,23 @@ fn file_resource() {
     let group = file.group().unwrap();
     assert!(group == "root" || group == "wheel");
 }
+
+#[test]
+#[cfg(target_os="macos")]
+fn file_link() {
+    let b = backend::direct::Direct::new();
+    let s = specinfra::new(&b).unwrap();
+    let file = s.file("/etc");
+
+    assert_eq!(file.linked_to().unwrap(), "private/etc");
+}
+
+#[test]
+#[cfg(target_os="linux")]
+fn file_link() {
+    let b = backend::direct::Direct::new();
+    let s = specinfra::new(&b).unwrap();
+    let file = s.file("/var/lock");
+
+    assert_eq!(file.linked_to().unwrap(), "/run/lock");
+}
