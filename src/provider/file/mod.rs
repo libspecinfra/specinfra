@@ -31,6 +31,15 @@ impl FileProvider {
         })
     }
 
+    pub fn size(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.size(name)),
+            shell: Box::new(move |b| s.size(name, b)),
+        })
+    }
+
     pub fn is_file(&self, name: &'static str) -> Box<HandleFunc> {
         let i = self.inline.clone();
         let s = self.shell.clone();
@@ -239,6 +248,15 @@ impl FileProvider {
         Box::new(HandleFunc {
             inline: Box::new(move || i.md5sum(name)),
             shell: Box::new(move |b| s.md5sum(name, b)),
+        })
+    }
+
+    pub fn sha256sum(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.sha256sum(name)),
+            shell: Box::new(move |b| s.sha256sum(name, b)),
         })
     }
 }

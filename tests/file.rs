@@ -37,6 +37,9 @@ fn file_resource() {
     assert_eq!(file.is_writable_by_user("root").unwrap(), true);
 
     assert_eq!(file.md5sum().unwrap().len(), 32);
+    assert_eq!(file.sha256sum().unwrap().len(), 64);
+
+    assert!(file.size().unwrap() > 0);
 }
 
 #[test]

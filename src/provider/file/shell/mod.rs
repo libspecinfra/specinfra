@@ -12,6 +12,10 @@ pub trait ShellProvider {
         Err(From::from(HandleFuncNotDefined))
     }
 
+    fn size(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
     fn is_file(&self, &str, &Backend) -> Result<Output, Error> {
         Err(From::from(HandleFuncNotDefined))
     }
@@ -69,6 +73,10 @@ pub trait ShellProvider {
     }
 
     fn md5sum(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
+    fn sha256sum(&self, &str, &Backend) -> Result<Output, Error> {
         Err(From::from(HandleFuncNotDefined))
     }
 

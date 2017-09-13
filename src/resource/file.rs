@@ -25,6 +25,12 @@ impl<'a> File<'a> {
             .and_then(Output::to_u32)
     }
 
+    pub fn size(&self) -> Result<i64, error::Error> {
+        self.backend
+            .handle(self.provider.file.size(self.name))
+            .and_then(Output::to_i64)
+    }
+
     pub fn is_file(&self) -> Result<bool, error::Error> {
         self.backend
             .handle(self.provider.file.is_file(self.name))
@@ -160,6 +166,12 @@ impl<'a> File<'a> {
     pub fn md5sum(&self) -> Result<String, error::Error> {
         self.backend
             .handle(self.provider.file.md5sum(self.name))
+            .and_then(Output::to_string)
+    }
+
+    pub fn sha256sum(&self) -> Result<String, error::Error> {
+        self.backend
+            .handle(self.provider.file.sha256sum(self.name))
             .and_then(Output::to_string)
     }
 }
