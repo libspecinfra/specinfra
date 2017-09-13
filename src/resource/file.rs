@@ -121,6 +121,12 @@ impl<'a> File<'a> {
             .and_then(Output::to_bool)
     }
 
+    pub fn is_readable_by_user(&self, user: &'static str) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.file.is_readable_by_user(self.name, user))
+            .and_then(Output::to_bool)
+    }
+
     pub fn is_writable(&self) -> Result<bool, error::Error> {
         self.backend
             .handle(self.provider.file.is_writable(self.name))
