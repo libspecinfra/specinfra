@@ -20,4 +20,7 @@ fn file_resource() {
     assert_eq!(file.is_symlink().unwrap(), false);
     assert_eq!(file.contents().unwrap().contains("root"), true);
     assert_eq!(file.owner().unwrap(), "root");
+
+    let group = file.group().unwrap();
+    assert!(group == "root" || group == "wheel");
 }

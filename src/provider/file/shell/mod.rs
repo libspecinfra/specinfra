@@ -50,6 +50,10 @@ pub trait ShellProvider {
         Err(From::from(HandleFuncNotDefined))
     }
 
+    fn group(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
     fn box_clone(&self) -> Box<ShellProvider>;
 }
 
