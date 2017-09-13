@@ -32,6 +32,7 @@ fn file_resource() {
 
     assert_eq!(file.is_writable().unwrap(), true);
     assert_eq!(file.is_writable_by_owner().unwrap(), true);
+    assert_eq!(file.is_writable_by_group().unwrap(), false);
 }
 
 #[test]
