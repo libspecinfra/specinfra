@@ -132,6 +132,12 @@ impl<'a> File<'a> {
             .handle(self.provider.file.is_writable(self.name))
             .and_then(Output::to_bool)
     }
+
+    pub fn is_writable_by_owner(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.file.is_writable_by_owner(self.name))
+            .and_then(Output::to_bool)
+    }
 }
 
 // Wrapper functions for FFI

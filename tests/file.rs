@@ -31,6 +31,7 @@ fn file_resource() {
     assert_eq!(file.is_readable_by_user("root").unwrap(), true);
 
     assert_eq!(file.is_writable().unwrap(), true);
+    assert_eq!(file.is_writable_by_owner().unwrap(), true);
 }
 
 #[test]
