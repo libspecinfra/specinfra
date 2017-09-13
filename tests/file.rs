@@ -16,4 +16,5 @@ fn file_resource() {
     assert_eq!(file.is_block_device().unwrap(), false);
     assert_eq!(file.is_character_device().unwrap(), false);
     assert_eq!(file.is_pipe().unwrap(), false);
+    assert_eq!(file.is_socket().unwrap(), false);
 }
