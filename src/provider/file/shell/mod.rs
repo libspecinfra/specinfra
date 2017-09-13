@@ -22,6 +22,10 @@ pub trait ShellProvider {
         Err(From::from(HandleFuncNotDefined))
     }
 
+    fn is_character_device(&self, &str, &Backend) -> Result<Output, Error> {
+        Err(From::from(HandleFuncNotDefined))
+    }
+
     fn exist(&self, &str, &Backend) -> Result<Output, Error> {
         Err(From::from(HandleFuncNotDefined))
     }
