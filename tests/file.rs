@@ -28,6 +28,7 @@ fn file_resource() {
     assert_eq!(file.is_readable_by_owner().unwrap(), true);
     assert_eq!(file.is_readable_by_group().unwrap(), true);
     assert_eq!(file.is_readable_by_others().unwrap(), true);
+    assert_eq!(file.is_writable().unwrap(), true);
 }
 
 #[test]

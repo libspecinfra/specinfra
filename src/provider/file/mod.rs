@@ -174,6 +174,15 @@ impl FileProvider {
             shell: Box::new(move |b| s.is_readable(name, Some(&Whom::Others), b)),
         })
     }
+
+    pub fn is_writable(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.is_writable(name, None)),
+            shell: Box::new(move |b| s.is_writable(name, None, b)),
+        })
+    }
 }
 
 pub mod inline;
