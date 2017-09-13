@@ -13,4 +13,5 @@ fn file_resource() {
     assert_eq!(file.is_file().unwrap(), true);
     assert_eq!(file.exist().unwrap(), true);
     assert_eq!(file.is_directory().unwrap(), false);
+    assert_eq!(file.is_block_device().unwrap(), false);
 }

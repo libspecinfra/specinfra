@@ -42,6 +42,12 @@ impl<'a> File<'a> {
             .handle(self.provider.file.is_directory(self.name))
             .and_then(Output::to_bool)
     }
+
+    pub fn is_block_device(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.file.is_block_device(self.name))
+            .and_then(Output::to_bool)
+    }
 }
 
 // Wrapper functions for FFI
