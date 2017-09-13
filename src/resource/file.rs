@@ -111,7 +111,7 @@ impl<'a> File<'a> {
 
     pub fn is_readable_by_group(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_readable_by_owner(self.name))
+            .handle(self.provider.file.is_readable_by_group(self.name))
             .and_then(Output::to_bool)
     }
 
