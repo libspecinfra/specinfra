@@ -54,6 +54,12 @@ impl<'a> File<'a> {
             .handle(self.provider.file.is_character_device(self.name))
             .and_then(Output::to_bool)
     }
+
+    pub fn is_pipe(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.file.is_pipe(self.name))
+            .and_then(Output::to_bool)
+    }
 }
 
 // Wrapper functions for FFI

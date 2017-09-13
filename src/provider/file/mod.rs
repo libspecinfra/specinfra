@@ -60,6 +60,15 @@ impl FileProvider {
         })
     }
 
+    pub fn is_pipe(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.is_pipe(name)),
+            shell: Box::new(move |b| s.is_pipe(name, b)),
+        })
+    }
+
     pub fn exist(&self, name: &'static str) -> Box<HandleFunc> {
         let i = self.inline.clone();
         let s = self.shell.clone();
