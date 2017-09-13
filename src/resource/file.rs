@@ -150,6 +150,12 @@ impl<'a> File<'a> {
             .handle(self.provider.file.is_writable_by_others(self.name))
             .and_then(Output::to_bool)
     }
+
+    pub fn is_writable_by_user(&self, user: &'static str) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.file.is_writable_by_user(self.name, user))
+            .and_then(Output::to_bool)
+    }
 }
 
 // Wrapper functions for FFI
