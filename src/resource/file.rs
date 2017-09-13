@@ -156,6 +156,12 @@ impl<'a> File<'a> {
             .handle(self.provider.file.is_writable_by_user(self.name, user))
             .and_then(Output::to_bool)
     }
+
+    pub fn md5sum(&self) -> Result<String, error::Error> {
+        self.backend
+            .handle(self.provider.file.md5sum(self.name))
+            .and_then(Output::to_string)
+    }
 }
 
 // Wrapper functions for FFI

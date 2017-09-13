@@ -35,6 +35,8 @@ fn file_resource() {
     assert_eq!(file.is_writable_by_group().unwrap(), false);
     assert_eq!(file.is_writable_by_others().unwrap(), false);
     assert_eq!(file.is_writable_by_user("root").unwrap(), true);
+
+    assert_eq!(file.md5sum().unwrap().len(), 32);
 }
 
 #[test]

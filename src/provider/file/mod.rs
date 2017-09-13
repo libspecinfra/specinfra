@@ -232,6 +232,15 @@ impl FileProvider {
             }),
         })
     }
+
+    pub fn md5sum(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.md5sum(name)),
+            shell: Box::new(move |b| s.md5sum(name, b)),
+        })
+    }
 }
 
 pub mod inline;
