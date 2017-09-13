@@ -104,6 +104,15 @@ impl FileProvider {
             shell: Box::new(move |b| s.contents(name, b)),
         })
     }
+
+    pub fn owner(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.owner(name)),
+            shell: Box::new(move |b| s.owner(name, b)),
+        })
+    }
 }
 
 pub mod inline;
