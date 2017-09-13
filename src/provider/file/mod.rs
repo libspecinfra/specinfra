@@ -156,6 +156,15 @@ impl FileProvider {
             shell: Box::new(move |b| s.is_readable(name, Some(&Whom::Owner), b)),
         })
     }
+
+    pub fn is_readable_by_group(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.is_readable(name, Some(&Whom::Group))),
+            shell: Box::new(move |b| s.is_readable(name, Some(&Whom::Group), b)),
+        })
+    }
 }
 
 pub mod inline;

@@ -108,6 +108,12 @@ impl<'a> File<'a> {
             .handle(self.provider.file.is_readable_by_owner(self.name))
             .and_then(Output::to_bool)
     }
+
+    pub fn is_readable_by_group(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.file.is_readable_by_owner(self.name))
+            .and_then(Output::to_bool)
+    }
 }
 
 // Wrapper functions for FFI
