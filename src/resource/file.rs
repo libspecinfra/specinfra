@@ -72,6 +72,12 @@ impl<'a> File<'a> {
             .handle(self.provider.file.is_symlink(self.name))
             .and_then(Output::to_bool)
     }
+
+    pub fn contents(&self) -> Result<String, error::Error> {
+        self.backend
+            .handle(self.provider.file.contents(self.name))
+            .and_then(Output::to_string)
+    }
 }
 
 // Wrapper functions for FFI

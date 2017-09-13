@@ -18,4 +18,5 @@ fn file_resource() {
     assert_eq!(file.is_pipe().unwrap(), false);
     assert_eq!(file.is_socket().unwrap(), false);
     assert_eq!(file.is_symlink().unwrap(), false);
+    assert_eq!(file.contents().unwrap().contains("root"), true);
 }

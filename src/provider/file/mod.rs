@@ -95,6 +95,15 @@ impl FileProvider {
             shell: Box::new(move |b| s.exist(name, b)),
         })
     }
+
+    pub fn contents(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.contents(name)),
+            shell: Box::new(move |b| s.contents(name, b)),
+        })
+    }
 }
 
 pub mod inline;
