@@ -292,3 +292,13 @@ pub extern "C" fn resource_file_contents(ptr: *const File) -> *mut c_char {
     let c = f.contents().unwrap();
     CString::new(c).unwrap().into_raw()
 }
+
+#[no_mangle]
+pub extern "C" fn resource_file_owner(ptr: *const File) -> *mut c_char {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    let c = f.owner().unwrap();
+    CString::new(c).unwrap().into_raw()
+}
