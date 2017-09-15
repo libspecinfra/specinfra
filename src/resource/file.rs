@@ -261,3 +261,13 @@ pub extern "C" fn resource_file_is_pipe(ptr: *const File) -> uint32_t {
 
     if f.is_pipe().unwrap() { 1 } else { 0 }
 }
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_socket(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_socket().unwrap() { 1 } else { 0 }
+}
