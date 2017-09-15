@@ -199,6 +199,16 @@ pub extern "C" fn resource_file_mode(ptr: *const File) -> uint32_t {
 }
 
 #[no_mangle]
+pub extern "C" fn resource_file_is_file(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_file().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
 pub extern "C" fn resource_file_exist(ptr: *const File) -> uint32_t {
     let f = unsafe {
         assert!(!ptr.is_null());
