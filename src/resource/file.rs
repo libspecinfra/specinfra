@@ -251,3 +251,13 @@ pub extern "C" fn resource_file_is_character_device(ptr: *const File) -> uint32_
         0
     }
 }
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_pipe(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_pipe().unwrap() { 1 } else { 0 }
+}
