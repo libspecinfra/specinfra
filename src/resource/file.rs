@@ -217,3 +217,13 @@ pub extern "C" fn resource_file_exist(ptr: *const File) -> uint32_t {
 
     if f.exist().unwrap() { 1 } else { 0 }
 }
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_directory(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_directory().unwrap() { 1 } else { 0 }
+}
