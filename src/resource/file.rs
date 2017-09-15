@@ -2,7 +2,8 @@ use backend::Backend;
 use provider::error;
 use provider::Provider;
 use provider::Output;
-use libc::uint32_t;
+use libc::{c_char, uint32_t};
+use std::ffi::CString;
 
 pub struct File<'a> {
     name: &'static str,
@@ -280,4 +281,14 @@ pub extern "C" fn resource_file_is_symlink(ptr: *const File) -> uint32_t {
     };
 
     if f.is_symlink().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_contents(ptr: *const File) -> *mut c_char {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    let c = f.contents().unwrap();
+    CString::new(c).unwrap().into_raw()
 }
