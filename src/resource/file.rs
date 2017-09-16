@@ -2,7 +2,9 @@ use backend::Backend;
 use provider::error;
 use provider::Provider;
 use provider::Output;
-use libc::uint32_t;
+use libc::{c_char, uint32_t, int64_t};
+use std::ffi::CString;
+use std::ffi::CStr;
 
 pub struct File<'a> {
     name: &'static str,
@@ -196,4 +198,306 @@ pub extern "C" fn resource_file_mode(ptr: *const File) -> uint32_t {
     };
 
     f.mode().unwrap()
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_file(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_file().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_exist(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.exist().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_directory(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_directory().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_block_device(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_block_device().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_character_device(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_character_device().unwrap() {
+        1
+    } else {
+        0
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_pipe(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_pipe().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_socket(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_socket().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_symlink(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_symlink().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_contents(ptr: *const File) -> *mut c_char {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    let c = f.contents().unwrap();
+    CString::new(c).unwrap().into_raw()
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_owner(ptr: *const File) -> *mut c_char {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    let c = f.owner().unwrap();
+    CString::new(c).unwrap().into_raw()
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_group(ptr: *const File) -> *mut c_char {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    let c = f.group().unwrap();
+    CString::new(c).unwrap().into_raw()
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_readable(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_readable().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_readable_by_owner(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_readable_by_owner().unwrap() {
+        1
+    } else {
+        0
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_readable_by_group(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_readable_by_group().unwrap() {
+        1
+    } else {
+        0
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_readable_by_others(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_readable_by_others().unwrap() {
+        1
+    } else {
+        0
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_readable_by_user(ptr: *const File,
+                                                    u: *const c_char)
+                                                    -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    let c_str = unsafe {
+        assert!(!u.is_null());
+        CStr::from_ptr(u)
+    };
+
+    let user = c_str.to_str().unwrap();
+    if f.is_readable_by_user(user).unwrap() {
+        1
+    } else {
+        0
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_writable(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_writable().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_writable_by_owner(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_writable_by_owner().unwrap() {
+        1
+    } else {
+        0
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_writable_by_group(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_writable_by_group().unwrap() {
+        1
+    } else {
+        0
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_writable_by_others(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_writable_by_others().unwrap() {
+        1
+    } else {
+        0
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_writable_by_user(ptr: *const File,
+                                                    u: *const c_char)
+                                                    -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    let c_str = unsafe {
+        assert!(!u.is_null());
+        CStr::from_ptr(u)
+    };
+
+    let user = c_str.to_str().unwrap();
+    if f.is_writable_by_user(user).unwrap() {
+        1
+    } else {
+        0
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_md5sum(ptr: *const File) -> *mut c_char {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    let c = f.md5sum().unwrap();
+    CString::new(c).unwrap().into_raw()
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_sha256sum(ptr: *const File) -> *mut c_char {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    let c = f.sha256sum().unwrap();
+    CString::new(c).unwrap().into_raw()
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_size(ptr: *const File) -> int64_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    f.size().unwrap()
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_linked_to(ptr: *const File) -> *mut c_char {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    let c = f.linked_to().unwrap();
+    CString::new(c).unwrap().into_raw()
 }
