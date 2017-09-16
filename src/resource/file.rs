@@ -439,3 +439,25 @@ pub extern "C" fn resource_file_is_writable_by_others(ptr: *const File) -> uint3
         0
     }
 }
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_writable_by_user(ptr: *const File,
+                                                    u: *const c_char)
+                                                    -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    let c_str = unsafe {
+        assert!(!u.is_null());
+        CStr::from_ptr(u)
+    };
+
+    let user = c_str.to_str().unwrap();
+    if f.is_writable_by_user(user).unwrap() {
+        1
+    } else {
+        0
+    }
+}
