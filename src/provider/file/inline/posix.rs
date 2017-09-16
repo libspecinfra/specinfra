@@ -50,7 +50,6 @@ impl Posix {
     // FIXME: is_readableとis_writableをまとめる
     fn is_readable_by_user(&self, name: &str, user: &str) -> Result<Output, Error> {
         let file_owner = try!(self.file_owner(name));
-
         if file_owner.name() == user {
             self.is_readable(name, Some(&Whom::Owner))
         } else {
