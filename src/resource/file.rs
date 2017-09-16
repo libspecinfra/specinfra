@@ -312,3 +312,41 @@ pub extern "C" fn resource_file_group(ptr: *const File) -> *mut c_char {
     let c = f.group().unwrap();
     CString::new(c).unwrap().into_raw()
 }
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_readable(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_readable().unwrap() { 1 } else { 0 }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_readable_by_owner(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_readable_by_owner().unwrap() {
+        1
+    } else {
+        0
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_readable_by_group(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_readable_by_group().unwrap() {
+        1
+    } else {
+        0
+    }
+}
