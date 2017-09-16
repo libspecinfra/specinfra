@@ -425,3 +425,17 @@ pub extern "C" fn resource_file_is_writable_by_group(ptr: *const File) -> uint32
         0
     }
 }
+
+#[no_mangle]
+pub extern "C" fn resource_file_is_writable_by_others(ptr: *const File) -> uint32_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    if f.is_writable_by_others().unwrap() {
+        1
+    } else {
+        0
+    }
+}
