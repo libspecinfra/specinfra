@@ -36,7 +36,13 @@ impl Backend for Direct {
     }
 
     fn handle(&self, handle_func: Box<HandleFunc>) -> Result<Output, Error> {
-        (handle_func.inline)().or_else(|_| (handle_func.shell)(self))
+        match (handle_func.inline)() {
+            Ok(r) => return Ok(r),
+            Err(Error::HandleFuncNotDefined(_)) => (),
+            Err(e) => return Err(e),
+        };
+
+        (handle_func.shell)(self)
     }
 
     fn run_command(&self, c: &str) -> Result<String, backend::error::Error> {
