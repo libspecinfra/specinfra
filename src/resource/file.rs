@@ -471,3 +471,13 @@ pub extern "C" fn resource_file_md5sum(ptr: *const File) -> *mut c_char {
     let c = f.md5sum().unwrap();
     CString::new(c).unwrap().into_raw()
 }
+
+#[no_mangle]
+pub extern "C" fn resource_file_sha256sum(ptr: *const File) -> *mut c_char {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    let c = f.sha256sum().unwrap();
+    CString::new(c).unwrap().into_raw()
+}
