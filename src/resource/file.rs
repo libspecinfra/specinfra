@@ -491,3 +491,13 @@ pub extern "C" fn resource_file_size(ptr: *const File) -> int64_t {
 
     f.size().unwrap()
 }
+
+#[no_mangle]
+pub extern "C" fn resource_file_linked_to(ptr: *const File) -> *mut c_char {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    let c = f.linked_to().unwrap();
+    CString::new(c).unwrap().into_raw()
+}
