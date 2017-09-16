@@ -461,3 +461,13 @@ pub extern "C" fn resource_file_is_writable_by_user(ptr: *const File,
         0
     }
 }
+
+#[no_mangle]
+pub extern "C" fn resource_file_md5sum(ptr: *const File) -> *mut c_char {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+    let c = f.md5sum().unwrap();
+    CString::new(c).unwrap().into_raw()
+}
