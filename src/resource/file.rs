@@ -2,7 +2,7 @@ use backend::Backend;
 use provider::error;
 use provider::Provider;
 use provider::Output;
-use libc::{c_char, uint32_t};
+use libc::{c_char, uint32_t, int64_t};
 use std::ffi::CString;
 use std::ffi::CStr;
 
@@ -480,4 +480,14 @@ pub extern "C" fn resource_file_sha256sum(ptr: *const File) -> *mut c_char {
     };
     let c = f.sha256sum().unwrap();
     CString::new(c).unwrap().into_raw()
+}
+
+#[no_mangle]
+pub extern "C" fn resource_file_size(ptr: *const File) -> int64_t {
+    let f = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    f.size().unwrap()
 }
