@@ -215,13 +215,11 @@ pub extern "C" fn resource_file_mode(ptr: *mut File) -> int32_t {
         &mut *ptr
     };
 
-    match f.mode() {
-        Ok(m) => m,
-        Err(e) => {
-            f.error = Some(e);
-            return -1;
-        }
-    }
+    f.mode().unwrap_or_else(|e| {
+        f.error = Some(e);
+        return -1;
+    })
+
 }
 
 #[no_mangle]
