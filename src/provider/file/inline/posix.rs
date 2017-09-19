@@ -82,7 +82,7 @@ impl Posix {
 
 impl InlineProvider for Posix {
     fn mode(&self, name: &str) -> Result<Output, Error> {
-        let res = try!(fs::metadata(name).map(|m| Output::U32(m.permissions().mode())));
+        let res = try!(fs::metadata(name).map(|m| Output::I32(m.permissions().mode() as i32)));
         Ok(res)
     }
 
@@ -156,7 +156,7 @@ impl InlineProvider for Posix {
 
     fn is_readable(&self, name: &str, whom: Option<&Whom>) -> Result<Output, Error> {
         let mode = try!(self.mode(name));
-        let mode_octal = try!(Output::to_u32(mode));
+        let mode_octal = try!(Output::to_i32(mode));
         let res = match whom {
             Some(w) => {
                 match *w {
@@ -173,7 +173,7 @@ impl InlineProvider for Posix {
 
     fn is_writable(&self, name: &str, whom: Option<&Whom>) -> Result<Output, Error> {
         let mode = try!(self.mode(name));
-        let mode_octal = try!(Output::to_u32(mode));
+        let mode_octal = try!(Output::to_i32(mode));
         let res = match whom {
             Some(w) => {
                 match *w {

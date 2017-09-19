@@ -2,7 +2,7 @@ use backend::Backend;
 use provider::error;
 use provider::Provider;
 use provider::Output;
-use libc::{c_char, uint32_t, int64_t};
+use libc::{c_char, uint32_t, int32_t, int64_t};
 use std::ffi::CString;
 use std::ffi::CStr;
 use std;
@@ -25,10 +25,10 @@ impl<'a> File<'a> {
         }
     }
 
-    pub fn mode(&self) -> Result<u32, error::Error> {
+    pub fn mode(&self) -> Result<i32, error::Error> {
         self.backend
             .handle(self.provider.file.mode(self.name))
-            .and_then(Output::to_u32)
+            .and_then(Output::to_i32)
     }
 
     pub fn size(&self) -> Result<i64, error::Error> {
@@ -209,13 +209,19 @@ pub extern "C" fn resource_file_error_description(ptr: *const File) -> *const c_
 
 
 #[no_mangle]
-pub extern "C" fn resource_file_mode(ptr: *const File) -> uint32_t {
+pub extern "C" fn resource_file_mode(ptr: *mut File) -> int32_t {
     let f = unsafe {
         assert!(!ptr.is_null());
-        &*ptr
+        &mut *ptr
     };
 
-    f.mode().unwrap()
+    match f.mode() {
+        Ok(m) => m,
+        Err(e) => {
+            f.error = Some(e);
+            return -1;
+        }
+    }
 }
 
 #[no_mangle]
