@@ -500,16 +500,18 @@ pub extern "C" fn resource_file_is_writable(ptr: *mut File) -> int32_t {
 }
 
 #[no_mangle]
-pub extern "C" fn resource_file_is_writable_by_owner(ptr: *const File) -> uint32_t {
+pub extern "C" fn resource_file_is_writable_by_owner(ptr: *mut File) -> int32_t {
     let f = unsafe {
         assert!(!ptr.is_null());
-        &*ptr
+        &mut *ptr
     };
 
-    if f.is_writable_by_owner().unwrap() {
-        1
-    } else {
-        0
+    match f.is_writable_by_owner() {
+        Ok(f) => if f { 1 } else { 0 },
+        Err(e) => {
+            f.error = Some(e);
+            return -1;
+        }
     }
 }
 
