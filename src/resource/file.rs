@@ -446,16 +446,18 @@ pub extern "C" fn resource_file_is_readable_by_group(ptr: *mut File) -> int32_t 
 }
 
 #[no_mangle]
-pub extern "C" fn resource_file_is_readable_by_others(ptr: *const File) -> uint32_t {
+pub extern "C" fn resource_file_is_readable_by_others(ptr: *mut File) -> int32_t {
     let f = unsafe {
         assert!(!ptr.is_null());
-        &*ptr
+        &mut *ptr
     };
 
-    if f.is_readable_by_others().unwrap() {
-        1
-    } else {
-        0
+    match f.is_readable_by_others() {
+        Ok(f) => if f { 1 } else { 0 },
+        Err(e) => {
+            f.error = Some(e);
+            return -1;
+        }
     }
 }
 
