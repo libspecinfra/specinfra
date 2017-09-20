@@ -2,7 +2,7 @@ use backend::Backend;
 use provider::error;
 use provider::Provider;
 use provider::Output;
-use libc::{c_char, uint32_t, int32_t, int64_t};
+use libc::{c_char, int32_t, int64_t};
 use std::ffi::CString;
 use std::ffi::CStr;
 use std;
@@ -548,12 +548,10 @@ pub extern "C" fn resource_file_is_writable_by_others(ptr: *mut File) -> int32_t
 }
 
 #[no_mangle]
-pub extern "C" fn resource_file_is_writable_by_user(ptr: *const File,
-                                                    u: *const c_char)
-                                                    -> uint32_t {
+pub extern "C" fn resource_file_is_writable_by_user(ptr: *mut File, u: *const c_char) -> int32_t {
     let f = unsafe {
         assert!(!ptr.is_null());
-        &*ptr
+        &mut *ptr
     };
 
     let c_str = unsafe {
@@ -562,10 +560,12 @@ pub extern "C" fn resource_file_is_writable_by_user(ptr: *const File,
     };
 
     let user = c_str.to_str().unwrap();
-    if f.is_writable_by_user(user).unwrap() {
-        1
-    } else {
-        0
+    match f.is_writable_by_user(user) {
+        Ok(f) => if f { 1 } else { 0 },
+        Err(e) => {
+            f.error = Some(e);
+            return -1;
+        }
     }
 }
 
