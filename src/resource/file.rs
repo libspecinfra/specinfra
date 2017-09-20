@@ -615,11 +615,17 @@ pub extern "C" fn resource_file_size(ptr: *mut File) -> int64_t {
 }
 
 #[no_mangle]
-pub extern "C" fn resource_file_linked_to(ptr: *const File) -> *mut c_char {
+pub extern "C" fn resource_file_linked_to(ptr: *mut File) -> *const c_char {
     let f = unsafe {
         assert!(!ptr.is_null());
-        &*ptr
+        &mut *ptr
     };
-    let c = f.linked_to().unwrap();
-    CString::new(c).unwrap().into_raw()
+
+    match f.linked_to() {
+        Ok(c) => CString::new(c).unwrap().into_raw(),
+        Err(e) => {
+            f.error = Some(e);
+            std::ptr::null()
+        }
+    }
 }
