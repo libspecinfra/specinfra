@@ -602,13 +602,16 @@ pub extern "C" fn resource_file_sha256sum(ptr: *mut File) -> *const c_char {
 }
 
 #[no_mangle]
-pub extern "C" fn resource_file_size(ptr: *const File) -> int64_t {
+pub extern "C" fn resource_file_size(ptr: *mut File) -> int64_t {
     let f = unsafe {
         assert!(!ptr.is_null());
-        &*ptr
+        &mut *ptr
     };
 
-    f.size().unwrap()
+    f.size().unwrap_or_else(|e| {
+        f.error = Some(e);
+        return -1;
+    })
 }
 
 #[no_mangle]
