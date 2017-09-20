@@ -18,6 +18,7 @@ pub struct HandleFunc {
 
 pub enum Output {
     U32(u32),
+    I32(i32),
     I64(i64),
     Bool(bool),
     Text(String),
@@ -42,6 +43,13 @@ impl Output {
     pub fn to_u32(o: Output) -> Result<u32, error::Error> {
         match o {
             Output::U32(u) => Ok(u),
+            _ => Err(From::from(OutputError)),
+        }
+    }
+
+    pub fn to_i32(o: Output) -> Result<i32, error::Error> {
+        match o {
+            Output::I32(u) => Ok(u),
             _ => Err(From::from(OutputError)),
         }
     }
