@@ -43,6 +43,15 @@ fn file_resource() {
 }
 
 #[test]
+fn file_not_exist() {
+    let b = backend::direct::Direct::new();
+    let s = specinfra::new(&b).unwrap();
+    let file = s.file("file_does_not_exist");
+
+    assert_eq!(file.exist().unwrap(), false);
+}
+
+#[test]
 #[cfg(target_os="macos")]
 fn file_link() {
     let b = backend::direct::Direct::new();
