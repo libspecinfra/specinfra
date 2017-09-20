@@ -570,23 +570,35 @@ pub extern "C" fn resource_file_is_writable_by_user(ptr: *mut File, u: *const c_
 }
 
 #[no_mangle]
-pub extern "C" fn resource_file_md5sum(ptr: *const File) -> *mut c_char {
+pub extern "C" fn resource_file_md5sum(ptr: *mut File) -> *const c_char {
     let f = unsafe {
         assert!(!ptr.is_null());
-        &*ptr
+        &mut *ptr
     };
-    let c = f.md5sum().unwrap();
-    CString::new(c).unwrap().into_raw()
+
+    match f.md5sum() {
+        Ok(c) => CString::new(c).unwrap().into_raw(),
+        Err(e) => {
+            f.error = Some(e);
+            std::ptr::null()
+        }
+    }
 }
 
 #[no_mangle]
-pub extern "C" fn resource_file_sha256sum(ptr: *const File) -> *mut c_char {
+pub extern "C" fn resource_file_sha256sum(ptr: *mut File) -> *const c_char {
     let f = unsafe {
         assert!(!ptr.is_null());
-        &*ptr
+        &mut *ptr
     };
-    let c = f.sha256sum().unwrap();
-    CString::new(c).unwrap().into_raw()
+
+    match f.sha256sum() {
+        Ok(c) => CString::new(c).unwrap().into_raw(),
+        Err(e) => {
+            f.error = Some(e);
+            std::ptr::null()
+        }
+    }
 }
 
 #[no_mangle]
