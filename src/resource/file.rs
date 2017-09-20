@@ -484,13 +484,19 @@ pub extern "C" fn resource_file_is_readable_by_user(ptr: *mut File, u: *const c_
 }
 
 #[no_mangle]
-pub extern "C" fn resource_file_is_writable(ptr: *const File) -> uint32_t {
+pub extern "C" fn resource_file_is_writable(ptr: *mut File) -> int32_t {
     let f = unsafe {
         assert!(!ptr.is_null());
-        &*ptr
+        &mut *ptr
     };
 
-    if f.is_writable().unwrap() { 1 } else { 0 }
+    match f.is_writable() {
+        Ok(f) => if f { 1 } else { 0 },
+        Err(e) => {
+            f.error = Some(e);
+            return -1;
+        }
+    }
 }
 
 #[no_mangle]
