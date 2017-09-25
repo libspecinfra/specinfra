@@ -48,6 +48,29 @@ printf("%#o", f.mode)
 
 Other language examples are [here](https://github.com/libspecinfra/examples) .
 
+## Internal components(for developers)
+
+Libspecinfra consists of some internal components. These components are:
+
+* Platforms
+  * Platforms detects OS/distributions and returns suitable providers.
+* Backends
+  * Currently two backends are supported.
+  * Direct Backend: Run functions of libspecinfra on the target host directly.
+  * SSH Backend: Run functions of libspecinfra on the target host via SSH.
+* Resources
+  * Resources are abstraction layers of several resources.
+  * File, package, servcice, user, group and so on.
+  * Only file resource is supported currently.
+* Providers
+  * Concrete implementations of resources.
+  * Provider has two types: Inline providers and shell providers.
+  * Inline providers are used with direct backend. It handles resources by rust code.
+  * Inline providers also have concrete implementations. For example, posix provider of file resource for UNIX-like OS.
+  * Shell providers are used with SSH backend and so on. It handles resources by shell command.
+  * Shell providers also have concrete implementatiosn. For example, bsd provider of file resource for OS based on BSD.
+  * If inline providers for some resources do not exist, direct backend uses shell providers instead of inline providers.
+
 
 ## TODO
 
