@@ -138,7 +138,7 @@ THis matrix show libspecinfra supports what type of backends.
 
 ### Resources
 
-Resources should be implemented. These resources are picked up from [Resource Types of Serverspec](http://serverspec.org/resource_types.html) . So some resources are implemented in serverspec, not in specinfra.
+This is a list of resources which should be implemented. These resources are picked up from [Resource Types of Serverspec](http://serverspec.org/resource_types.html) . So some resources are implemented in serverspec, not in specinfra.
 
 * bond
 * bridge
@@ -181,7 +181,7 @@ Resources should be implemented. These resources are picked up from [Resource Ty
 
 ### Platforms
 
-Platforms should be implemented. Specinfra gem supports these platforms.
+This is a list of platforms should be implemented. Specinfra gem supports these platforms.
 
 * AIX
 * Alpine Linux
@@ -214,7 +214,7 @@ Platforms should be implemented. Specinfra gem supports these platforms.
 
 ### Backends
 
-Backends should be implemented. Specinfra gem supports these backends.
+This is a list of backends which should be implemented. Specinfra gem supports these backends.
 
 * CMD(Windows)
 * Docker
