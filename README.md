@@ -71,6 +71,68 @@ Libspecinfra consists of some internal components. These components are:
   * Shell providers also have concrete implementatiosn. For example, bsd provider of file resource for OS based on BSD.
   * If inline providers for some resources do not exist, direct backend uses shell providers instead of inline providers.
 
+## Support matrix
+
+These are support matrix of platforms, backends, resources and providers.
+
+### Resources and inline providers
+
+This matrix shows which resources support which type of inline providers.
+
+| Resources | Inline Providers         |
+|-----------|--------------------------|
+| File      | :heavy_check_mark: Posix |
+
+
+### Platforms and shell providers
+
+This matrix shows which shell providers support which platforms.
+
+| Platforms                    | File                     |
+|------------------------------|--------------------------|
+| macOS                        | partially                |
+| Ubuntu                       | :heavy_multiplication_x: |
+| AIX                          | :heavy_multiplication_x: |
+| Alpine Linux                 | :heavy_multiplication_x: |
+| Amazon Linux                 | :heavy_multiplication_x: |
+| Arch Linux                   | :heavy_multiplication_x: |
+| CoreOS                       | :heavy_multiplication_x: |
+| Cumulus Linux                | :heavy_multiplication_x: |
+| Debian Linux                 | :heavy_multiplication_x: |
+| elementary OS                | :heavy_multiplication_x: |
+| EOS(Arista)                  | :heavy_multiplication_x: |
+| VMWare ESXi                  | :heavy_multiplication_x: |
+| Fedora                       | :heavy_multiplication_x: |
+| FreeBSD                      | :heavy_multiplication_x: |
+| Gentoo Linux                 | :heavy_multiplication_x: |
+| Linux MInt                   | :heavy_multiplication_x: |
+| NixOS                        | :heavy_multiplication_x: |
+| OpenBSD                      | :heavy_multiplication_x: |
+| openSUSE                     | :heavy_multiplication_x: |
+| Plamo Linux                  | :heavy_multiplication_x: |
+| Poky(Yokto)                  | :heavy_multiplication_x: |
+| Redhat Linux                 | :heavy_multiplication_x: |
+| SUSE Linux Enterprise Server | :heavy_multiplication_x: |
+| SmartOS                      | :heavy_multiplication_x: |
+| Solaris                      | :heavy_multiplication_x: |
+| SuSE Linux                   | :heavy_multiplication_x: |
+| Windows                      | :heavy_multiplication_x: |
+
+### Backends
+
+THis matrix show libspecinfra supports what type of backends.
+
+| Backends     | Support status           |
+|--------------|:--------------------------:|
+| Direct       | :heavy_check_mark:        |
+| SSH          | :heavy_check_mark:        |
+| CMD(Windows) | :heavy_multiplication_x: |
+| Docker       | :heavy_multiplication_x: |
+| jexex        | :heavy_multiplication_x: |
+| LXC          | :heavy_multiplication_x: |
+| Telnet       | :heavy_multiplication_x: |
+| WinRM        | :heavy_multiplication_x: |
+
 
 ## TODO
 
