@@ -90,4 +90,5 @@ impl Clone for Box<ShellProvider> {
 }
 
 pub mod bsd;
+pub mod linux;
 pub mod null;
