@@ -14,7 +14,7 @@ pub struct Ubuntu {
     release: String,
 }
 
-fn detect_from_content(content: &str) -> Option<Box<Platform>> {
+fn detect_by_lsb_releae(content: &str) -> Option<Box<Platform>> {
     let mut lines = content.lines();
     let line = lines.next().unwrap();
     if line.starts_with("DISTRIB_ID") {
@@ -43,14 +43,14 @@ impl Platform for Ubuntu {
 
     fn inline_detector(&self) -> Option<Box<Platform>> {
         let mut file = File::open("/etc/lsb-release").unwrap();
-        let mut contents = String::new();
-        let _ = file.read_to_string(&mut contents);
-        detect_from_content(&contents)
+        let mut content = String::new();
+        let _ = file.read_to_string(&mut content);
+        detect_by_lsb_releae(&content)
     }
 
     fn shell_detector(&self, b: &Backend) -> Option<Box<Platform>> {
-        let contents = b.run_command("cat /etc/lsb-release").unwrap();
-        detect_from_content(&contents)
+        let content = b.run_command("cat /etc/lsb-release").unwrap();
+        detect_by_lsb_releae(&content)
     }
 
     fn get_provider(&self) -> Box<Provider> {
