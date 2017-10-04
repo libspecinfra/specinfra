@@ -14,25 +14,6 @@ pub struct Ubuntu {
     release: String,
 }
 
-fn detect_by_lsb_releae(content: &str) -> Option<Box<Platform>> {
-    let mut lines = content.lines();
-    let line = lines.next().unwrap();
-    if line.starts_with("DISTRIB_ID") {
-        let id = line.split("=").nth(1).unwrap().trim();
-        if id == "Ubuntu" {
-            let line = lines.next().unwrap();
-            let release = line.split("=").nth(1).unwrap();
-            let u = Ubuntu {
-                name: id.to_string(),
-                release: release.to_string(),
-            };
-
-            return Some(Box::new(u));
-        }
-    }
-    None
-}
-
 impl Platform for Ubuntu {
     fn new() -> Ubuntu {
         Ubuntu {
@@ -48,18 +29,18 @@ impl Platform for Ubuntu {
         };
 
 
-        let mut content = String::new();
-        let _ = file.read_to_string(&mut content);
-        detect_by_lsb_releae(&content)
+        let mut contents = String::new();
+        let _ = file.read_to_string(&mut contents);
+        self.detect_by_lsb_release(&contents)
     }
 
     fn shell_detector(&self, b: &Backend) -> Option<Box<Platform>> {
-        let content = match b.run_command("cat /etc/lsb-release") {
+        let contents = match b.run_command("cat /etc/lsb-release") {
             Err(_) => return None,
             Ok(f) => f,
         };
 
-        detect_by_lsb_releae(&content)
+        self.detect_by_lsb_release(&contents)
     }
 
     fn get_provider(&self) -> Box<Provider> {
@@ -71,5 +52,26 @@ impl Platform for Ubuntu {
         let p = Provider { file: Box::new(fp) };
 
         Box::new(p)
+    }
+}
+
+impl Ubuntu {
+    fn detect_by_lsb_release(&self, contents: &str) -> Option<Box<Platform>> {
+        let mut lines = contents.lines();
+        let line = lines.next().unwrap();
+        if line.starts_with("DISTRIB_ID") {
+            let id = line.split("=").nth(1).unwrap().trim();
+            if id == "Ubuntu" {
+                let line = lines.next().unwrap();
+                let release = line.split("=").nth(1).unwrap();
+                let u = Ubuntu {
+                    name: id.to_string(),
+                    release: release.to_string(),
+                };
+
+                return Some(Box::new(u));
+            }
+        }
+        None
     }
 }
