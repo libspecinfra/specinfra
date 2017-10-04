@@ -68,5 +68,6 @@ fn file_link() {
     let s = specinfra::new(&b).unwrap();
     let file = s.file("/var/lock");
 
-    assert_eq!(file.linked_to().unwrap(), "/run/lock");
+    let link = file.linked_to().unwrap();
+    assert!(link == "/run/lock" || link == "../run/lock");
 }

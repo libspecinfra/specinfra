@@ -1,6 +1,6 @@
-pub mod ubuntu;
 use platform::base_platform::BasePlatform;
 use platform::platform::Platform;
+use platform::linux::redhat::RedHat;
 use platform::linux::ubuntu::Ubuntu;
 
 
@@ -12,9 +12,13 @@ pub struct Linux {
 
 impl BasePlatform for Linux {
     fn new() -> Linux {
+        let mut p: Vec<Box<Platform>> = Vec::new();
+        p.push(Box::new(Ubuntu::new()));
+        p.push(Box::new(RedHat::new()));
+
         Linux {
             curr: 0,
-            platforms: vec![Box::new(Ubuntu::new())],
+            platforms: p,
         }
     }
 
@@ -35,3 +39,6 @@ impl Iterator for Linux {
         }
     }
 }
+
+pub mod redhat;
+pub mod ubuntu;
