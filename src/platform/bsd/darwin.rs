@@ -7,7 +7,7 @@ use provider::file::FileProvider;
 use provider::file::inline::posix::Posix;
 use provider::file::shell::bsd::Bsd;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Darwin {
     name: String,
     release: String,

@@ -8,7 +8,7 @@ use provider::file::FileProvider;
 use provider::file::inline::posix::Posix;
 use provider::file::shell::linux::Linux;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Ubuntu {
     name: String,
     release: String,
@@ -42,14 +42,23 @@ impl Platform for Ubuntu {
     }
 
     fn inline_detector(&self) -> Option<Box<Platform>> {
-        let mut file = File::open("/etc/lsb-release").unwrap();
+        let mut file = match File::open("/etc/lsb-release") {
+            Err(_) => return None,
+            Ok(f) => f,
+        };
+
+
         let mut content = String::new();
         let _ = file.read_to_string(&mut content);
         detect_by_lsb_releae(&content)
     }
 
     fn shell_detector(&self, b: &Backend) -> Option<Box<Platform>> {
-        let content = b.run_command("cat /etc/lsb-release").unwrap();
+        let content = match b.run_command("cat /etc/lsb-release") {
+            Err(_) => return None,
+            Ok(f) => f,
+        };
+
         detect_by_lsb_releae(&content)
     }
 
