@@ -12,6 +12,7 @@ pub enum Error {
     Io(io::Error),
     Ssh(ssh2::Error),
     Env(env::VarError),
+    Command(CommandError),
 }
 
 impl error::Error for Error {
@@ -21,6 +22,7 @@ impl error::Error for Error {
             Error::Io(ref err) => err.description(),
             Error::Ssh(ref err) => err.description(),
             Error::Env(ref err) => err.description(),
+            Error::Command(ref err) => err.description(),
         }
     }
 }
@@ -32,6 +34,7 @@ impl fmt::Display for Error {
             Error::Io(ref err) => err.fmt(f),
             Error::Ssh(ref err) => err.fmt(f),
             Error::Env(ref err) => err.fmt(f),
+            Error::Command(ref err) => err.fmt(f),
         }
     }
 }
@@ -57,5 +60,29 @@ impl From<ssh2::Error> for Error {
 impl From<env::VarError> for Error {
     fn from(err: env::VarError) -> Error {
         Error::Env(err)
+    }
+}
+
+impl From<CommandError> for Error {
+    fn from(err: CommandError) -> Error {
+        Error::Command(err)
+    }
+}
+
+#[derive(Debug)]
+pub struct CommandError {
+    pub code: i32,
+    pub message: String,
+}
+
+impl error::Error for CommandError {
+    fn description(&self) -> &str {
+        &self.message
+    }
+}
+
+impl fmt::Display for CommandError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.message)
     }
 }
