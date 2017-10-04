@@ -47,6 +47,15 @@ impl Backend for Direct {
 
     fn run_command(&self, c: &str) -> Result<String, backend::error::Error> {
         let out = try!(Command::new("sh").args(&["-c", c]).output());
+
+        if !out.status.success() {
+            let e = backend::error::CommandError {
+                code: out.status.code().unwrap(),
+                message: try!(String::from_utf8(out.stderr)),
+            };
+            return Err(From::from(e));
+        }
+
         let res = try!(String::from_utf8(out.stdout));
         Ok(res.trim().to_string())
     }
