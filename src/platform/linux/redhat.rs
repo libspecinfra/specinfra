@@ -3,7 +3,7 @@ use std::io::prelude::*;
 
 use backend::Backend;
 use platform::platform::Platform;
-use provider::Provider;
+use provider::Providers;
 use provider::file::FileProvider;
 use provider::file::inline::posix::Posix;
 use provider::file::shell::linux::Linux;
@@ -43,13 +43,13 @@ impl Platform for RedHat {
         self.detect_by_redhat_release(&contents)
     }
 
-    fn get_provider(&self) -> Box<Provider> {
+    fn get_providers(&self) -> Box<Providers> {
         let fp = FileProvider {
             inline: Box::new(Posix),
             shell: Box::new(Linux),
         };
 
-        let p = Provider { file: Box::new(fp) };
+        let p = Providers { file: Box::new(fp) };
 
         Box::new(p)
     }

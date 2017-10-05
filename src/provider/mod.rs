@@ -7,7 +7,7 @@ use std::fmt;
 
 use backend::Backend;
 
-pub struct Provider {
+pub struct Providers {
     pub file: Box<file::FileProvider>,
 }
 

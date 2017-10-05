@@ -2,7 +2,7 @@ use uname;
 
 use backend::Backend;
 use platform::platform::Platform;
-use provider::Provider;
+use provider::Providers;
 use provider::file::FileProvider;
 use provider::file::inline::posix::Posix;
 use provider::file::shell::bsd::Bsd;
@@ -54,13 +54,13 @@ impl Platform for Darwin {
         }
     }
 
-    fn get_provider(&self) -> Box<Provider> {
+    fn get_providers(&self) -> Box<Providers> {
         let fp = FileProvider {
             inline: Box::new(Posix),
             shell: Box::new(Bsd),
         };
 
-        let p = Provider { file: Box::new(fp) };
+        let p = Providers { file: Box::new(fp) };
 
         Box::new(p)
     }

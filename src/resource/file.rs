@@ -1,6 +1,6 @@
 use backend::Backend;
 use provider::error;
-use provider::Provider;
+use provider::Providers;
 use provider::Output;
 use libc::{c_char, int32_t, int64_t};
 use std::ffi::CString;
@@ -11,173 +11,173 @@ use std::error::Error;
 pub struct File<'a> {
     name: &'static str,
     backend: &'a Backend,
-    provider: &'a Provider,
+    providers: &'a Providers,
     error: Option<error::Error>,
 }
 
 impl<'a> File<'a> {
-    pub fn new(n: &'static str, b: &'a Backend, p: &'a Provider) -> File<'a> {
+    pub fn new(n: &'static str, b: &'a Backend, p: &'a Providers) -> File<'a> {
         File {
             name: n,
             backend: b,
-            provider: p,
+            providers: p,
             error: None,
         }
     }
 
     pub fn mode(&self) -> Result<i32, error::Error> {
         self.backend
-            .handle(self.provider.file.mode(self.name))
+            .handle(self.providers.file.mode(self.name))
             .and_then(Output::to_i32)
     }
 
     pub fn size(&self) -> Result<i64, error::Error> {
         self.backend
-            .handle(self.provider.file.size(self.name))
+            .handle(self.providers.file.size(self.name))
             .and_then(Output::to_i64)
     }
 
     pub fn is_file(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_file(self.name))
+            .handle(self.providers.file.is_file(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn exist(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.exist(self.name))
+            .handle(self.providers.file.exist(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_directory(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_directory(self.name))
+            .handle(self.providers.file.is_directory(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_block_device(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_block_device(self.name))
+            .handle(self.providers.file.is_block_device(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_character_device(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_character_device(self.name))
+            .handle(self.providers.file.is_character_device(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_pipe(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_pipe(self.name))
+            .handle(self.providers.file.is_pipe(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_socket(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_socket(self.name))
+            .handle(self.providers.file.is_socket(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_symlink(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_symlink(self.name))
+            .handle(self.providers.file.is_symlink(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn contents(&self) -> Result<String, error::Error> {
         self.backend
-            .handle(self.provider.file.contents(self.name))
+            .handle(self.providers.file.contents(self.name))
             .and_then(Output::to_string)
     }
 
     pub fn owner(&self) -> Result<String, error::Error> {
         self.backend
-            .handle(self.provider.file.owner(self.name))
+            .handle(self.providers.file.owner(self.name))
             .and_then(Output::to_string)
     }
 
     pub fn group(&self) -> Result<String, error::Error> {
         self.backend
-            .handle(self.provider.file.group(self.name))
+            .handle(self.providers.file.group(self.name))
             .and_then(Output::to_string)
     }
 
     pub fn linked_to(&self) -> Result<String, error::Error> {
         self.backend
-            .handle(self.provider.file.linked_to(self.name))
+            .handle(self.providers.file.linked_to(self.name))
             .and_then(Output::to_string)
     }
 
     pub fn is_readable(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_readable(self.name))
+            .handle(self.providers.file.is_readable(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_readable_by_owner(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_readable_by_owner(self.name))
+            .handle(self.providers.file.is_readable_by_owner(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_readable_by_group(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_readable_by_group(self.name))
+            .handle(self.providers.file.is_readable_by_group(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_readable_by_others(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_readable_by_others(self.name))
+            .handle(self.providers.file.is_readable_by_others(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_readable_by_user(&self, user: &'static str) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_readable_by_user(self.name, user))
+            .handle(self.providers.file.is_readable_by_user(self.name, user))
             .and_then(Output::to_bool)
     }
 
     pub fn is_writable(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_writable(self.name))
+            .handle(self.providers.file.is_writable(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_writable_by_owner(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_writable_by_owner(self.name))
+            .handle(self.providers.file.is_writable_by_owner(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_writable_by_group(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_writable_by_group(self.name))
+            .handle(self.providers.file.is_writable_by_group(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_writable_by_others(&self) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_writable_by_others(self.name))
+            .handle(self.providers.file.is_writable_by_others(self.name))
             .and_then(Output::to_bool)
     }
 
     pub fn is_writable_by_user(&self, user: &'static str) -> Result<bool, error::Error> {
         self.backend
-            .handle(self.provider.file.is_writable_by_user(self.name, user))
+            .handle(self.providers.file.is_writable_by_user(self.name, user))
             .and_then(Output::to_bool)
     }
 
     pub fn md5sum(&self) -> Result<String, error::Error> {
         self.backend
-            .handle(self.provider.file.md5sum(self.name))
+            .handle(self.providers.file.md5sum(self.name))
             .and_then(Output::to_string)
     }
 
     pub fn sha256sum(&self) -> Result<String, error::Error> {
         self.backend
-            .handle(self.provider.file.sha256sum(self.name))
+            .handle(self.providers.file.sha256sum(self.name))
             .and_then(Output::to_string)
     }
 }
