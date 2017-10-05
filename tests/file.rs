@@ -1,12 +1,50 @@
 extern crate specinfra;
 
 use specinfra::backend;
+use specinfra::Specinfra;
+// use specinfra::provider::file::inline::null::Null;
 
 #[test]
 #[cfg(any(target_os="macos", target_os="linux"))]
-fn file_resource() {
+fn file_resource_with_inline_provider() {
     let b = backend::direct::Direct::new();
     let s = specinfra::new(&b).unwrap();
+    test_file_resource(s);
+}
+
+#[test]
+fn file_not_exist_with_inline_provider() {
+    let b = backend::direct::Direct::new();
+    let s = specinfra::new(&b).unwrap();
+    test_file_not_exit(s);
+}
+
+// #[test]
+// fn file_not_exist_with_shell_provider() {
+// let b = backend::direct::Direct::new();
+// let mut s = specinfra::new(&b).unwrap();
+// s.provider.file.inline = Box::new(Null);
+// test_file_not_exit(s);
+// }
+//
+
+#[test]
+#[cfg(target_os="macos")]
+fn file_link_on_macos_with_inline_provider() {
+    let b = backend::direct::Direct::new();
+    let s = specinfra::new(&b).unwrap();
+    test_file_link_on_macos(s);
+}
+
+#[test]
+#[cfg(target_os="linux")]
+fn file_link_with_inline_provder_for_linux() {
+    let b = backend::direct::Direct::new();
+    let s = specinfra::new(&b).unwrap();
+    test_file_link_on_linux(s);
+}
+
+fn test_file_resource(s: Specinfra) {
     let file = s.file("/etc/passwd");
 
     assert_eq!(file.mode().unwrap(), 0o644);
@@ -42,32 +80,20 @@ fn file_resource() {
     assert!(file.size().unwrap() > 0);
 }
 
-#[test]
-fn file_not_exist() {
-    let b = backend::direct::Direct::new();
-    let s = specinfra::new(&b).unwrap();
+fn test_file_not_exit(s: Specinfra) {
     let file = s.file("file_does_not_exist");
-
     assert_eq!(file.exist().unwrap(), false);
 }
 
-#[test]
 #[cfg(target_os="macos")]
-fn file_link() {
-    let b = backend::direct::Direct::new();
-    let s = specinfra::new(&b).unwrap();
+fn test_file_link_on_macos(s: Specinfra) {
     let file = s.file("/etc");
-
     assert_eq!(file.linked_to().unwrap(), "private/etc");
 }
 
-#[test]
 #[cfg(target_os="linux")]
-fn file_link() {
-    let b = backend::direct::Direct::new();
-    let s = specinfra::new(&b).unwrap();
+fn test_file_link_on_linux(s: Specinfra) {
     let file = s.file("/var/lock");
-
     let link = file.linked_to().unwrap();
     assert!(link == "/run/lock" || link == "../run/lock");
 }
