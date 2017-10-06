@@ -5,7 +5,7 @@ use provider::error::Error;
 use provider::Output;
 use provider::file::shell::ShellProvider;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Linux;
 
 impl ShellProvider for Linux {

@@ -1,6 +1,6 @@
 use provider::file::inline::InlineProvider;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Null;
 
 impl InlineProvider for Null {

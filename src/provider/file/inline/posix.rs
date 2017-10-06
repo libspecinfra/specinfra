@@ -20,7 +20,7 @@ use sha2::{self, Digest};
 use nix;
 
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Posix;
 
 impl Posix {
