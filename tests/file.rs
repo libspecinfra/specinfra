@@ -2,7 +2,7 @@ extern crate specinfra;
 
 use specinfra::backend;
 use specinfra::Specinfra;
-// use specinfra::provider::file::inline::null::Null;
+use specinfra::provider::file::inline::null::Null;
 
 #[test]
 #[cfg(any(target_os="macos", target_os="linux"))]
@@ -13,20 +13,27 @@ fn file_resource_with_inline_provider() {
 }
 
 #[test]
+fn file_resource_with_shell_provider() {
+    let b = backend::direct::Direct::new();
+    let mut s = specinfra::new(&b).unwrap();
+    s.providers.file.inline = Box::new(Null);
+    test_file_resource(s);
+}
+
+#[test]
 fn file_not_exist_with_inline_provider() {
     let b = backend::direct::Direct::new();
     let s = specinfra::new(&b).unwrap();
     test_file_not_exit(s);
 }
 
-// #[test]
-// fn file_not_exist_with_shell_provider() {
-// let b = backend::direct::Direct::new();
-// let mut s = specinfra::new(&b).unwrap();
-// s.provider.file.inline = Box::new(Null);
-// test_file_not_exit(s);
-// }
-//
+#[test]
+fn file_not_exist_with_shell_provider() {
+    let b = backend::direct::Direct::new();
+    let mut s = specinfra::new(&b).unwrap();
+    s.providers.file.inline = Box::new(Null);
+    test_file_not_exit(s);
+}
 
 #[test]
 #[cfg(target_os="macos")]
@@ -37,10 +44,28 @@ fn file_link_on_macos_with_inline_provider() {
 }
 
 #[test]
+#[cfg(target_os="macos")]
+fn file_link_on_macos_with_shell_provider() {
+    let b = backend::direct::Direct::new();
+    let mut s = specinfra::new(&b).unwrap();
+    s.providers.file.inline = Box::new(Null);
+    test_file_link_on_macos(s);
+}
+
+#[test]
 #[cfg(target_os="linux")]
-fn file_link_with_inline_provder_for_linux() {
+fn file_link_on_linux_with_inline_provder() {
     let b = backend::direct::Direct::new();
     let s = specinfra::new(&b).unwrap();
+    test_file_link_on_linux(s);
+}
+
+#[test]
+#[cfg(target_os="linux")]
+fn file_link_on_linux_with_shell_provder() {
+    let b = backend::direct::Direct::new();
+    let mut s = specinfra::new(&b).unwrap();
+    s.providers.file.inline = Box::new(Null);
     test_file_link_on_linux(s);
 }
 
