@@ -12,8 +12,11 @@ pub struct Unix;
 impl ShellProvider for Unix {
     fn exist(&self, name: &str, b: &Backend) -> Result<Output, Error> {
         let c = format!("test -e {}", name);
-        let res = try!(b.run_command(&c));
-        Ok(Output::Bool(res.success))
+        let success = match b.run_command(&c) {
+            Ok(r) => r.success,
+            Err(_) => false,
+        };
+        Ok(Output::Bool(success))
     }
 
     fn is_file(&self, name: &str, b: &Backend) -> Result<Output, Error> {
