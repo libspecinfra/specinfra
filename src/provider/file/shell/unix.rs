@@ -63,7 +63,7 @@ impl ShellProvider for Unix {
 }
 
 impl Unix {
-    fn is_something(&self, name: &str, b: &Backend, c: String) -> Result<Output, Error> {
+    pub fn is_something(&self, name: &str, b: &Backend, c: String) -> Result<Output, Error> {
         let exist = try!(self.exist(name, b));
         if !try!(Output::to_bool(exist)) {
             let e = StringError { string: format!("{} does not exist", name) };

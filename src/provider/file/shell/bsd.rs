@@ -5,6 +5,7 @@ use provider::error::Error;
 use provider::Output;
 use provider::file::shell::ShellProvider;
 use provider::file::shell::unix::Unix;
+use provider::file::Whom;
 
 #[derive(Clone, Debug)]
 pub struct Bsd;
@@ -67,5 +68,51 @@ impl ShellProvider for Bsd {
         let c = format!("stat -f%Sg {}", name);
         let res = try!(b.run_command(&c));
         Ok(Output::Text(res.stdout))
+    }
+
+    fn is_readable(&self, name: &str, whom: Option<&Whom>, b: &Backend) -> Result<Output, Error> {
+        let mode = try!(self.mode(name, b));
+        let mode_octal = try!(Output::to_i32(mode));
+        let res = match whom {
+            Some(w) => {
+                match *w {
+                    Whom::Owner => Output::Bool(mode_octal & 0o400 != 0),
+                    Whom::Group => Output::Bool(mode_octal & 0o040 != 0),
+                    Whom::Others => Output::Bool(mode_octal & 0o004 != 0),
+                    Whom::User(ref u) => try!(self.is_readable_by_user(name, &u, b)),
+                }
+            }
+            None => Output::Bool(mode_octal & 0o444 != 0),
+        };
+        Ok(res)
+    }
+
+    fn is_writable(&self, name: &str, whom: Option<&Whom>, b: &Backend) -> Result<Output, Error> {
+        let mode = try!(self.mode(name, b));
+        let mode_octal = try!(Output::to_i32(mode));
+        let res = match whom {
+            Some(w) => {
+                match *w {
+                    Whom::Owner => Output::Bool(mode_octal & 0o200 != 0),
+                    Whom::Group => Output::Bool(mode_octal & 0o020 != 0),
+                    Whom::Others => Output::Bool(mode_octal & 0o002 != 0),
+                    Whom::User(ref u) => try!(self.is_writable_by_user(name, &u, b)),
+                }
+            }
+            None => Output::Bool(mode_octal & 0o222 != 0),
+        };
+        Ok(res)
+    }
+}
+
+impl Bsd {
+    fn is_readable_by_user(&self, name: &str, user: &str, b: &Backend) -> Result<Output, Error> {
+        let c = format!("sudo -u {} -s test -r {}", user, name);
+        Unix.is_something(name, b, c)
+    }
+
+    fn is_writable_by_user(&self, name: &str, user: &str, b: &Backend) -> Result<Output, Error> {
+        let c = format!("sudo -u {} -s test -w {}", user, name);
+        Unix.is_something(name, b, c)
     }
 }
