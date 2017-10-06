@@ -1,6 +1,3 @@
-pub mod error;
-pub mod file;
-
 use std::result::Result;
 use std::error::Error;
 use std::fmt;
@@ -75,3 +72,7 @@ impl Output {
         }
     }
 }
+
+pub mod error;
+pub mod file;
+pub mod service;
