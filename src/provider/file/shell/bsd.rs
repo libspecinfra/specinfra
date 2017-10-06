@@ -121,6 +121,10 @@ impl ShellProvider for Bsd {
         let res = try!(b.run_command(&c));
         Ok(Output::I64(try!(res.stdout.parse::<i64>())))
     }
+
+    fn linked_to(&self, name: &str, b: &Backend) -> Result<Output, Error> {
+        Unix.linked_to(name, b)
+    }
 }
 
 impl Bsd {

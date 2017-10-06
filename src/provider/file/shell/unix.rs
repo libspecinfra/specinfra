@@ -60,6 +60,14 @@ impl ShellProvider for Unix {
         Ok(Output::Text(res.stdout))
     }
 
+
+    fn linked_to(&self, name: &str, b: &Backend) -> Result<Output, Error> {
+        let c = format!("readlink {}", name);
+        let res = try!(b.run_command(&c));
+        Ok(Output::Text(res.stdout))
+    }
+
+
     fn box_clone(&self) -> Box<ShellProvider> {
         Box::new((*self).clone())
     }
