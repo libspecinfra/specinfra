@@ -38,7 +38,7 @@ pub fn new(b: &Backend) -> Result<Specinfra, error::Error> {
 
 impl<'a> Specinfra<'a> {
     pub fn file(&self, name: &'static str) -> File {
-        File::new(name, self.backend, &self.providers)
+        File::new(name, self.backend, &self.providers.file)
     }
 }
 
