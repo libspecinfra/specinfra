@@ -12,7 +12,7 @@ use libc::c_char;
 use backend::Backend;
 use platform::platform::Platform;
 use resource::file::File;
-use provider::Provider;
+use provider::Providers;
 
 pub mod backend;
 pub mod platform;
@@ -23,22 +23,22 @@ pub mod error;
 pub struct Specinfra<'a> {
     pub backend: &'a Backend,
     pub platform: Box<Platform>,
-    pub provider: Box<Provider>,
+    pub providers: Box<Providers>,
 }
 
 pub fn new(b: &Backend) -> Result<Specinfra, error::Error> {
     let p = try!(b.detect_platform().ok_or(platform::error::Error));
-    let provider = p.get_provider();
+    let providers = p.get_providers();
     Ok(Specinfra {
         backend: b,
         platform: p,
-        provider: provider,
+        providers: providers,
     })
 }
 
 impl<'a> Specinfra<'a> {
     pub fn file(&self, name: &'static str) -> File {
-        File::new(name, self.backend, &self.provider)
+        File::new(name, self.backend, &self.providers)
     }
 }
 

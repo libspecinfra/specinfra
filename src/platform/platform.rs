@@ -10,7 +10,7 @@ pub trait Platform: PlatformClone + Debug {
 
     fn shell_detector(&self, &Backend) -> Option<Box<Platform>>;
 
-    fn get_provider(&self) -> Box<provider::Provider>;
+    fn get_providers(&self) -> Box<provider::Providers>;
 }
 
 pub trait PlatformClone {
