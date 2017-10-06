@@ -90,8 +90,8 @@ This matrix shows which shell providers support which platforms.
 
 | Platforms                    | File                     |
 |------------------------------|--------------------------|
-| macOS                        | partially                |
-| Ubuntu                       | :heavy_multiplication_x: |
+| macOS                        | :heavy_check_mark:       |
+| Ubuntu                       | :heavy_check_mark:       |
 | AIX                          | :heavy_multiplication_x: |
 | Alpine Linux                 | :heavy_multiplication_x: |
 | Amazon Linux                 | :heavy_multiplication_x: |
@@ -111,7 +111,7 @@ This matrix shows which shell providers support which platforms.
 | openSUSE                     | :heavy_multiplication_x: |
 | Plamo Linux                  | :heavy_multiplication_x: |
 | Poky(Yokto)                  | :heavy_multiplication_x: |
-| Redhat Linux                 | :heavy_multiplication_x: |
+| Red Hat Linux                | :heavy_check_mark:       |
 | SUSE Linux Enterprise Server | :heavy_multiplication_x: |
 | SmartOS                      | :heavy_multiplication_x: |
 | Solaris                      | :heavy_multiplication_x: |
