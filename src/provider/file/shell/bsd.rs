@@ -103,6 +103,24 @@ impl ShellProvider for Bsd {
         };
         Ok(res)
     }
+
+    fn md5sum(&self, name: &str, b: &Backend) -> Result<Output, Error> {
+        let c = format!("md5 {} | awk '{{print $4}}'", name);
+        let res = try!(b.run_command(&c));
+        Ok(Output::Text(res.stdout))
+    }
+
+    fn sha256sum(&self, name: &str, b: &Backend) -> Result<Output, Error> {
+        let c = format!("shasum -a 256 {} | awk '{{print $1}}'", name);
+        let res = try!(b.run_command(&c));
+        Ok(Output::Text(res.stdout))
+    }
+
+    fn size(&self, name: &str, b: &Backend) -> Result<Output, Error> {
+        let c = format!("stat -f%z {}", name);
+        let res = try!(b.run_command(&c));
+        Ok(Output::I64(try!(res.stdout.parse::<i64>())))
+    }
 }
 
 impl Bsd {
