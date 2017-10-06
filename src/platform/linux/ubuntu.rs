@@ -40,7 +40,7 @@ impl Platform for Ubuntu {
             Ok(f) => f,
         };
 
-        self.detect_by_lsb_release(&contents)
+        self.detect_by_lsb_release(&contents.stdout)
     }
 
     fn get_providers(&self) -> Box<Providers> {

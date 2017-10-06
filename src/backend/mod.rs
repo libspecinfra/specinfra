@@ -9,10 +9,17 @@ use provider::Output;
 use provider::HandleFunc;
 use provider;
 
+pub struct CommandResult {
+    pub stdout: String,
+    pub stderr: String,
+    pub success: bool,
+    pub code: i32,
+}
+
 pub trait Backend {
     fn detect_platform(&self) -> Option<Box<Platform>>;
     fn handle(&self, Box<HandleFunc>) -> Result<Output, provider::error::Error>;
-    fn run_command(&self, &str) -> Result<String, error::Error>;
+    fn run_command(&self, &str) -> Result<CommandResult, error::Error>;
 }
 
 // Wrapper struct for FFI
