@@ -20,6 +20,7 @@ We provide only Ruby and mruby bindings currently.
 
 * [Ruby](https://github.com/libspecinfra/libspecinfra-ruby)
 * [mruby](https://github.com/libspecinfra/mruby-libspecinfra)
+* [Python](https://github.com/libspecinfra/libspecinfra-python)
 
 Other languages will be supported.
 
