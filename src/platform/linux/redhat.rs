@@ -40,7 +40,7 @@ impl Platform for RedHat {
             Ok(f) => f,
         };
 
-        self.detect_by_redhat_release(&contents)
+        self.detect_by_redhat_release(&contents.stdout)
     }
 
     fn get_providers(&self) -> Box<Providers> {

@@ -12,7 +12,7 @@ impl ShellProvider for Linux {
     fn mode(&self, name: &str, b: &Backend) -> Result<Output, Error> {
         let c = format!("stat -c %a {}", name);
         let res = try!(b.run_command(&c));
-        let m = try!(i32::from_str_radix(&res, 8));
+        let m = try!(i32::from_str_radix(&res.stdout, 8));
         Ok(Output::I32(m))
     }
 

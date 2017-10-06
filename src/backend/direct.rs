@@ -4,6 +4,7 @@ use std::str;
 
 use backend;
 use backend::Backend;
+use backend::CommandResult;
 use provider::error::Error;
 use provider::HandleFunc;
 use provider::Output;
@@ -45,7 +46,7 @@ impl Backend for Direct {
         (handle_func.shell)(self)
     }
 
-    fn run_command(&self, c: &str) -> Result<String, backend::error::Error> {
+    fn run_command(&self, c: &str) -> Result<CommandResult, backend::error::Error> {
         let out = try!(Command::new("sh").args(&["-c", c]).output());
 
         if !out.status.success() {
@@ -56,8 +57,16 @@ impl Backend for Direct {
             return Err(From::from(e));
         }
 
-        let res = try!(String::from_utf8(out.stdout));
-        Ok(res.trim().to_string())
+        let stdout = try!(String::from_utf8(out.stdout));
+        let stderr = try!(String::from_utf8(out.stderr));
+        let res = CommandResult {
+            stdout: stdout.trim().to_string(),
+            stderr: stderr.trim().to_string(),
+            code: out.status.code().unwrap(),
+            success: out.status.success(),
+        };
+
+        Ok(res)
     }
 }
 
