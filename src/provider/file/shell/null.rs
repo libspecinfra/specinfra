@@ -1,6 +1,6 @@
 use provider::file::shell::ShellProvider;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Null;
 
 impl ShellProvider for Null {

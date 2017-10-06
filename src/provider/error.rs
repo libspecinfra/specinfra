@@ -78,7 +78,10 @@ impl From<backend::error::Error> for Error {
 }
 
 #[derive(Debug)]
-pub struct HandleFuncNotDefined;
+pub struct HandleFuncNotDefined {
+    pub provider: String,
+    pub func: String,
+}
 
 impl error::Error for HandleFuncNotDefined {
     fn description(&self) -> &str {
