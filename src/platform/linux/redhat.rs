@@ -4,9 +4,10 @@ use std::io::prelude::*;
 use backend::Backend;
 use platform::platform::Platform;
 use provider::Providers;
+use provider::file;
 use provider::file::FileProvider;
-use provider::file::inline::posix::Posix;
-use provider::file::shell::linux::Linux;
+use provider::service;
+use provider::service::ServiceProvider;
 
 #[derive(Clone, Debug)]
 pub struct RedHat {
@@ -45,11 +46,19 @@ impl Platform for RedHat {
 
     fn get_providers(&self) -> Box<Providers> {
         let fp = FileProvider {
-            inline: Box::new(Posix),
-            shell: Box::new(Linux),
+            inline: Box::new(file::inline::posix::Posix),
+            shell: Box::new(file::shell::linux::Linux),
         };
 
-        let p = Providers { file: Box::new(fp) };
+        let sp = ServiceProvider {
+            inline: Box::new(service::inline::null::Null),
+            shell: Box::new(service::shell::null::Null),
+        };
+
+        let p = Providers {
+            file: Box::new(fp),
+            service: Box::new(sp),
+        };
 
         Box::new(p)
     }

@@ -12,4 +12,14 @@ pub trait InlineProvider: Debug {
         };
         Err(From::from(e))
     }
+
+    fn box_clone(&self) -> Box<InlineProvider>;
 }
+
+impl Clone for Box<InlineProvider> {
+    fn clone(&self) -> Box<InlineProvider> {
+        self.box_clone()
+    }
+}
+
+pub mod null;

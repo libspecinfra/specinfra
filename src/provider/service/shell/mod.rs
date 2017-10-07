@@ -13,4 +13,14 @@ pub trait ShellProvider: Debug {
         };
         Err(From::from(e))
     }
+
+    fn box_clone(&self) -> Box<ShellProvider>;
 }
+
+impl Clone for Box<ShellProvider> {
+    fn clone(&self) -> Box<ShellProvider> {
+        self.box_clone()
+    }
+}
+
+pub mod null;

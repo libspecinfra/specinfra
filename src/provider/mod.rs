@@ -6,6 +6,7 @@ use backend::Backend;
 
 pub struct Providers {
     pub file: Box<file::FileProvider>,
+    pub service: Box<service::ServiceProvider>,
 }
 
 pub struct HandleFunc {
