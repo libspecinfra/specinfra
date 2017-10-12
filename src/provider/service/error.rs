@@ -1,10 +1,10 @@
 use std::error;
 use std::fmt;
 
-#[cfg(all(feature="systemd", target_os="linux"))]
+#[cfg(all(feature="inline-systemd", target_os="linux"))]
 use provider::service::inline::systemd;
 
-#[cfg(not(all(feature="systemd", target_os="linux")))]
+#[cfg(not(all(feature="inline-systemd", target_os="linux")))]
 use provider::service::inline::_systemd as systemd;
 
 use provider;

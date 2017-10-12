@@ -21,4 +21,4 @@ name = "specinfra"
 crate-type = ["dylib", "rlib"]
 
 [features]
-systemd = ["dbus"]
+inline-systemd = ["dbus"]
