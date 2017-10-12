@@ -51,7 +51,7 @@ impl Platform for RedHat {
         };
 
         let sp = ServiceProvider {
-            inline: Box::new(service::inline::null::Null),
+            inline: Box::new(service::inline::systemd::Systemd),
             shell: Box::new(service::shell::null::Null),
         };
 
