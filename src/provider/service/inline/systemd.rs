@@ -32,7 +32,7 @@ impl Systemd {
                                               "GetUnit"));
 
         let r = try!(c.send_with_reply_and_block(m, 2000));
-        // let object_path: Path = try!(r.read1());
+        let object_path: Path = try!(r.read1());
 
         Ok("active")
     }

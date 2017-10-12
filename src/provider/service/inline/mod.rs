@@ -27,5 +27,6 @@ pub mod null;
 #[cfg(all(feature="systemd", target_os="linux"))]
 pub mod systemd;
 
+// Dummy module for not using systemd feature
 #[cfg(any(not(feature="systemd"), not(target_os="linux")))]
 pub mod _systemd;
