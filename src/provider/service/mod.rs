@@ -6,5 +6,6 @@ pub struct ServiceProvider {
     pub shell: Box<ShellProvider>,
 }
 
+pub mod error;
 pub mod inline;
 pub mod shell;

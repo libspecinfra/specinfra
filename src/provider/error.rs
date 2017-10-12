@@ -7,12 +7,7 @@ use nix;
 
 use backend;
 use provider::OutputError;
-
-#[cfg(all(feature="systemd", target_os="linux"))]
-use provider::service::inline::systemd;
-
-#[cfg(not(all(feature="systemd", target_os="linux")))]
-use provider::service::inline::_systemd as systemd;
+use provider::service;
 
 #[derive(Debug)]
 pub enum Error {
@@ -23,7 +18,7 @@ pub enum Error {
     ParseInt(num::ParseIntError),
     Output(OutputError),
     Backend(backend::error::Error),
-    DBus(systemd::dbus::Error),
+    Service(service::error::Error),
 }
 
 impl error::Error for Error {
@@ -36,7 +31,7 @@ impl error::Error for Error {
             Error::ParseInt(ref err) => err.description(),
             Error::Output(ref err) => err.description(),
             Error::Backend(ref err) => err.description(),
-            Error::DBus(ref err) => err.description(),
+            Error::Service(ref err) => err.description(),
         }
     }
 }
@@ -51,7 +46,7 @@ impl fmt::Display for Error {
             Error::ParseInt(ref err) => err.fmt(f),
             Error::Output(ref err) => err.fmt(f),
             Error::Backend(ref err) => err.fmt(f),
-            Error::DBus(ref err) => err.fmt(f),
+            Error::Service(ref err) => err.fmt(f),
         }
     }
 }
@@ -86,9 +81,9 @@ impl From<backend::error::Error> for Error {
     }
 }
 
-impl From<systemd::dbus::Error> for Error {
-    fn from(err: systemd::dbus::Error) -> Error {
-        Error::DBus(err)
+impl From<service::error::Error> for Error {
+    fn from(err: service::error::Error) -> Error {
+        Error::Service(err)
     }
 }
 
