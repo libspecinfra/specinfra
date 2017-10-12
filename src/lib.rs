@@ -12,6 +12,7 @@ use libc::c_char;
 use backend::Backend;
 use platform::platform::Platform;
 use resource::file::File;
+use resource::service::Service;
 use provider::Providers;
 
 pub mod backend;
@@ -39,6 +40,10 @@ pub fn new(b: &Backend) -> Result<Specinfra, error::Error> {
 impl<'a> Specinfra<'a> {
     pub fn file(&self, name: &'static str) -> File {
         File::new(name, self.backend, &self.providers.file)
+    }
+
+    pub fn service(&self, name: &'static str) -> Service {
+        Service::new(name, self.backend, &self.providers.service)
     }
 }
 

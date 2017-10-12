@@ -7,6 +7,7 @@ use nix;
 
 use backend;
 use provider::OutputError;
+use provider::service;
 
 #[derive(Debug)]
 pub enum Error {
@@ -17,6 +18,7 @@ pub enum Error {
     ParseInt(num::ParseIntError),
     Output(OutputError),
     Backend(backend::error::Error),
+    Service(service::error::Error),
 }
 
 impl error::Error for Error {
@@ -29,6 +31,7 @@ impl error::Error for Error {
             Error::ParseInt(ref err) => err.description(),
             Error::Output(ref err) => err.description(),
             Error::Backend(ref err) => err.description(),
+            Error::Service(ref err) => err.description(),
         }
     }
 }
@@ -43,6 +46,7 @@ impl fmt::Display for Error {
             Error::ParseInt(ref err) => err.fmt(f),
             Error::Output(ref err) => err.fmt(f),
             Error::Backend(ref err) => err.fmt(f),
+            Error::Service(ref err) => err.fmt(f),
         }
     }
 }
@@ -74,6 +78,12 @@ impl From<OutputError> for Error {
 impl From<backend::error::Error> for Error {
     fn from(err: backend::error::Error) -> Error {
         Error::Backend(err)
+    }
+}
+
+impl From<service::error::Error> for Error {
+    fn from(err: service::error::Error) -> Error {
+        Error::Service(err)
     }
 }
 
@@ -121,5 +131,12 @@ impl fmt::Display for StringError {
 impl From<StringError> for Error {
     fn from(err: StringError) -> Error {
         Error::String(err)
+    }
+}
+
+impl From<String> for Error {
+    fn from(s: String) -> Error {
+        let e = StringError { string: s };
+        Error::String(e)
     }
 }

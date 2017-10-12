@@ -1,6 +1,3 @@
-pub mod error;
-pub mod file;
-
 use std::result::Result;
 use std::error::Error;
 use std::fmt;
@@ -9,6 +6,7 @@ use backend::Backend;
 
 pub struct Providers {
     pub file: Box<file::FileProvider>,
+    pub service: Box<service::ServiceProvider>,
 }
 
 pub struct HandleFunc {
@@ -75,3 +73,7 @@ impl Output {
         }
     }
 }
+
+pub mod error;
+pub mod file;
+pub mod service;

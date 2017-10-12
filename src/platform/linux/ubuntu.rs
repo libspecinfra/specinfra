@@ -5,8 +5,9 @@ use backend::Backend;
 use platform::platform::Platform;
 use provider::Providers;
 use provider::file::FileProvider;
-use provider::file::inline::posix::Posix;
-use provider::file::shell::linux::Linux;
+use provider::service::ServiceProvider;
+use provider::file;
+use provider::service;
 
 #[derive(Clone, Debug)]
 pub struct Ubuntu {
@@ -45,11 +46,19 @@ impl Platform for Ubuntu {
 
     fn get_providers(&self) -> Box<Providers> {
         let fp = FileProvider {
-            inline: Box::new(Posix),
-            shell: Box::new(Linux),
+            inline: Box::new(file::inline::posix::Posix),
+            shell: Box::new(file::shell::linux::Linux),
         };
 
-        let p = Providers { file: Box::new(fp) };
+        let sp = ServiceProvider {
+            inline: Box::new(service::inline::systemd::Systemd),
+            shell: Box::new(service::shell::null::Null),
+        };
+
+        let p = Providers {
+            file: Box::new(fp),
+            service: Box::new(sp),
+        };
 
         Box::new(p)
     }
