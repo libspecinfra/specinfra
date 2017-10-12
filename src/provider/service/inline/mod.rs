@@ -23,3 +23,9 @@ impl Clone for Box<InlineProvider> {
 }
 
 pub mod null;
+
+#[cfg(all(feature="systemd", target_os="linux"))]
+pub mod systemd;
+
+#[cfg(any(not(feature="systemd"), not(target_os="linux")))]
+pub mod _systemd;
