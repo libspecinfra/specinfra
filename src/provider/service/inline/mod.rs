@@ -30,3 +30,6 @@ pub mod systemd;
 // Dummy module for not using systemd feature
 #[cfg(any(not(feature="inline-systemd"), not(target_os="linux")))]
 pub mod _systemd;
+
+#[cfg(any(not(feature="inline-systemd"), not(target_os="linux")))]
+pub use self::_systemd as systemd;
