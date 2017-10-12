@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
     c.vm.provision :shell, inline: <<-EOF
       curl https://sh.rustup.rs -sSf | su -l ubuntu -c "sh -s -- -y"
       apt-get update
-      apt-get install -y gcc libssl-dev pkg-config cmake
+      apt-get install -y gcc libssl-dev pkg-config cmake libdbus-glib-1-dev
     EOF
   end
 
@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
     c.vm.box = "centos/7"
     c.vm.provision :shell, inline: <<-EOF
       curl https://sh.rustup.rs -sSf | su -l vagrant -c "sh -s -- -y"
-      yum install -y gcc openssl-devel cmake
+      yum install -y gcc openssl-devel cmake dbus-devel
     EOF
   end
 
