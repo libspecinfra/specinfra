@@ -19,4 +19,10 @@ impl<'a> Service<'a> {
             error: None,
         }
     }
+
+    pub fn is_running(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.is_running(self.name))
+            .and_then(Output::to_bool)
+    }
 }
