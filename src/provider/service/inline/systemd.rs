@@ -50,18 +50,21 @@ impl Systemd {
     fn get_unit_file_state(&self, name: &str) -> Result<String, Error> {
         let c = try!(Connection::get_private(BusType::System));
 
-        let object_path = try!(self.get_object_path(name));
+        let service: String;
+        if name.ends_with(".service") {
+            service = name.to_string()
+        } else {
+            service = name.to_string() + ".service"
+        }
 
         let m = try!(Message::new_method_call("org.freedesktop.systemd1",
-                                              object_path,
-                                              "org.freedesktop.DBus.Properties",
-                                              "Get"))
-            .append2("org.freedesktop.systemd1.Unit", "UnitFileState");
+                                              "/org/freedesktop/systemd1",
+                                              "org.freedesktop.systemd1.Manager",
+                                              "GetUnitFileState"))
+            .append1(service);
 
         let r = try!(c.send_with_reply_and_block(m, 2000));
-        let s: Variant<&str> = try!(r.read1());
-        let unit_file_state = s.0;
-        println!("{}", unit_file_state);
+        let unit_file_state: &str = try!(r.read1());
         Ok(unit_file_state.to_string())
     }
 
