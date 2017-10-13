@@ -22,6 +22,22 @@ pub trait ShellProvider: Debug {
         Err(From::from(e))
     }
 
+    fn enable(&self, &str, &Backend) -> Result<Output, Error> {
+        let e = HandleFuncNotDefined {
+            provider: format!("{:?}", self),
+            func: "enable".to_string(),
+        };
+        Err(From::from(e))
+    }
+
+    fn disable(&self, &str, &Backend) -> Result<Output, Error> {
+        let e = HandleFuncNotDefined {
+            provider: format!("{:?}", self),
+            func: "disable".to_string(),
+        };
+        Err(From::from(e))
+    }
+
     fn box_clone(&self) -> Box<ShellProvider>;
 }
 

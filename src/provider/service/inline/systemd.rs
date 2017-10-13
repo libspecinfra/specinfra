@@ -23,12 +23,64 @@ impl InlineProvider for Systemd {
         Ok(Output::Bool(state == "enabled"))
     }
 
+    fn enable(&self, name: &str) -> Result<Output, Error> {
+        let s = try!(self.enable_unit_file_state(name));
+        Ok(Output::Bool(s))
+    }
+
+    fn disable(&self, name: &str) -> Result<Output, Error> {
+        let s = try!(self.disable_unit_file_state(name));
+        Ok(Output::Bool(s))
+    }
+
     fn box_clone(&self) -> Box<InlineProvider> {
         Box::new((*self).clone())
     }
 }
 
 impl Systemd {
+    fn enable_unit_file_state(&self, name: &str) -> Result<bool, Error> {
+        let c = try!(Connection::get_private(BusType::System));
+
+        let service: String;
+        if name.ends_with(".service") {
+            service = name.to_string()
+        } else {
+            service = name.to_string() + ".service"
+        }
+
+        let m = try!(Message::new_method_call("org.freedesktop.systemd1",
+                                              "/org/freedesktop/systemd1",
+                                              "org.freedesktop.systemd1.Manager",
+                                              "EnableUnitFiles"))
+            .append3(vec![service], false, false);
+
+        try!(c.send_with_reply_and_block(m, 2000));
+
+        Ok(true)
+    }
+
+    fn disable_unit_file_state(&self, name: &str) -> Result<bool, Error> {
+        let c = try!(Connection::get_private(BusType::System));
+
+        let service: String;
+        if name.ends_with(".service") {
+            service = name.to_string()
+        } else {
+            service = name.to_string() + ".service"
+        }
+
+        let m = try!(Message::new_method_call("org.freedesktop.systemd1",
+                                              "/org/freedesktop/systemd1",
+                                              "org.freedesktop.systemd1.Manager",
+                                              "DisableUnitFiles"))
+            .append2(vec![service], false);
+
+        try!(c.send_with_reply_and_block(m, 2000));
+
+        Ok(true)
+    }
+
     fn get_active_state(&self, name: &str) -> Result<String, Error> {
         let c = try!(Connection::get_private(BusType::System));
 

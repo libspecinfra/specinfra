@@ -16,4 +16,10 @@ fn service_resource() {
 
     let sshd = s.service("sshd");
     assert!(sshd.is_enabled().unwrap());
+
+    let nginx = s.service("nginx");
+    assert!(nginx.enable().unwrap());
+    assert!(nginx.is_enabled().unwrap());
+    assert!(nginx.disable().unwrap());
+    assert_eq!(nginx.is_enabled().unwrap(), false);
 }
