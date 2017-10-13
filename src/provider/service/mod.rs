@@ -23,6 +23,15 @@ impl ServiceProvider {
             shell: Box::new(move |b| s.is_running(name, b)),
         })
     }
+
+    pub fn is_enabled(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.is_enabled(name)),
+            shell: Box::new(move |b| s.is_enabled(name, b)),
+        })
+    }
 }
 
 pub mod error;

@@ -25,4 +25,10 @@ impl<'a> Service<'a> {
             .handle(self.provider.is_running(self.name))
             .and_then(Output::to_bool)
     }
+
+    pub fn is_enabled(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.is_enabled(self.name))
+            .and_then(Output::to_bool)
+    }
 }

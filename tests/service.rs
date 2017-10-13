@@ -13,4 +13,7 @@ fn service_resource() {
 
     let dbus = s.service("dbus");
     assert!(dbus.is_running().unwrap());
+
+    let sshd = s.service("sshd");
+    assert!(sshd.is_enabled().unwrap());
 }
