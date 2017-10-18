@@ -43,4 +43,16 @@ impl<'a> Service<'a> {
             .handle(self.provider.disable(self.name))
             .and_then(Output::to_bool)
     }
+
+    pub fn start(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.start(self.name))
+            .and_then(Output::to_bool)
+    }
+
+    pub fn stop(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.stop(self.name))
+            .and_then(Output::to_bool)
+    }
 }

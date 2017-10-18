@@ -22,4 +22,10 @@ fn service_resource() {
     assert!(nginx.is_enabled().unwrap());
     assert!(nginx.disable().unwrap());
     assert_eq!(nginx.is_enabled().unwrap(), false);
+
+    assert!(nginx.start().unwrap());
+    assert!(nginx.is_running().unwrap());
+    assert!(nginx.stop().unwrap());
+    assert_eq!(nginx.is_running().unwrap(), false);
+
 }
