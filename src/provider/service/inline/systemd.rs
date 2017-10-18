@@ -2,7 +2,7 @@ pub extern crate dbus;
 
 use std::result::Result;
 
-use self::dbus::{Connection, BusType, Message, Path};
+use self::dbus::{Connection, BusType, ConnectionItem, Message, Path};
 use self::dbus::arg::Variant;
 
 use provider::service::inline::InlineProvider;
@@ -33,12 +33,106 @@ impl InlineProvider for Systemd {
         Ok(Output::Bool(s))
     }
 
+    fn start(&self, name: &str) -> Result<Output, Error> {
+        let s = try!(self.start_unit(name));
+        Ok(Output::Bool(s))
+    }
+
+    fn stop(&self, name: &str) -> Result<Output, Error> {
+        let s = try!(self.stop_unit(name));
+        Ok(Output::Bool(s))
+    }
+
     fn box_clone(&self) -> Box<InlineProvider> {
         Box::new((*self).clone())
     }
 }
 
 impl Systemd {
+    fn start_unit(&self, name: &str) -> Result<bool, Error> {
+        let c = try!(Connection::get_private(BusType::System));
+        let _ = c.add_match("interface='org.freedesktop.systemd1.Manager'");
+
+        let service: String;
+        if name.ends_with(".service") {
+            service = name.to_string()
+        } else {
+            service = name.to_string() + ".service"
+        }
+
+        let m = try!(Message::new_method_call("org.freedesktop.systemd1",
+                                              "/org/freedesktop/systemd1",
+                                              "org.freedesktop.systemd1.Manager",
+                                              "StartUnit"))
+            .append2(service.clone(), "replace");
+
+
+        let _ = c.send(m);
+        self.wait_service_job_finished(c, &service, "active")
+    }
+
+    fn wait_service_job_finished(&self,
+                                 c: Connection,
+                                 service: &str,
+                                 state: &str)
+                                 -> Result<bool, Error> {
+
+        for ci in c.iter(10) {
+            let m = if let &ConnectionItem::Signal(ref s) = &ci {
+                s
+            } else {
+                continue;
+            };
+
+            if &*m.interface().unwrap() != "org.freedesktop.systemd1.Manager" {
+                continue;
+            };
+
+            if &*m.member().unwrap() != "JobRemoved" {
+                continue;
+            };
+
+            let (_, _, unit, result) = m.get4::<u32, Path, &str, &str>();
+
+            if unit.unwrap() != service {
+                continue;
+            };
+
+            if result.unwrap() != "done" {
+                continue;
+            };
+
+            break;
+        }
+
+        if try!(self.get_active_state(service)) == state {
+            Ok(true)
+        } else {
+            Ok(false)
+        }
+    }
+
+    fn stop_unit(&self, name: &str) -> Result<bool, Error> {
+        let c = try!(Connection::get_private(BusType::System));
+        let _ = c.add_match("interface='org.freedesktop.systemd1.Manager'");
+
+        let service: String;
+        if name.ends_with(".service") {
+            service = name.to_string()
+        } else {
+            service = name.to_string() + ".service"
+        }
+
+        let m = try!(Message::new_method_call("org.freedesktop.systemd1",
+                                              "/org/freedesktop/systemd1",
+                                              "org.freedesktop.systemd1.Manager",
+                                              "StopUnit"))
+            .append2(service.clone(), "replace");
+
+        let _ = c.send(m);
+        self.wait_service_job_finished(c, &service, "inactive")
+    }
+
     fn enable_unit_file_state(&self, name: &str) -> Result<bool, Error> {
         let c = try!(Connection::get_private(BusType::System));
 
