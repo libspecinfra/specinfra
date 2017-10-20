@@ -43,6 +43,16 @@ impl InlineProvider for Systemd {
         Ok(Output::Bool(s))
     }
 
+    fn reload(&self, name: &str) -> Result<Output, Error> {
+        let s = try!(self.reload_unit(name));
+        Ok(Output::Bool(s))
+    }
+
+    fn restart(&self, name: &str) -> Result<Output, Error> {
+        let s = try!(self.restart_unit(name));
+        Ok(Output::Bool(s))
+    }
+
     fn box_clone(&self) -> Box<InlineProvider> {
         Box::new((*self).clone())
     }
@@ -64,6 +74,50 @@ impl Systemd {
                                               "/org/freedesktop/systemd1",
                                               "org.freedesktop.systemd1.Manager",
                                               "StartUnit"))
+            .append2(service.clone(), "replace");
+
+
+        let _ = c.send(m);
+        self.wait_service_job_finished(c, &service, "active")
+    }
+
+    fn reload_unit(&self, name: &str) -> Result<bool, Error> {
+        let c = try!(Connection::get_private(BusType::System));
+        let _ = c.add_match("interface='org.freedesktop.systemd1.Manager'");
+
+        let service: String;
+        if name.ends_with(".service") {
+            service = name.to_string()
+        } else {
+            service = name.to_string() + ".service"
+        }
+
+        let m = try!(Message::new_method_call("org.freedesktop.systemd1",
+                                              "/org/freedesktop/systemd1",
+                                              "org.freedesktop.systemd1.Manager",
+                                              "ReloadUnit"))
+            .append2(service.clone(), "replace");
+
+
+        let _ = c.send(m);
+        self.wait_service_job_finished(c, &service, "active")
+    }
+
+    fn restart_unit(&self, name: &str) -> Result<bool, Error> {
+        let c = try!(Connection::get_private(BusType::System));
+        let _ = c.add_match("interface='org.freedesktop.systemd1.Manager'");
+
+        let service: String;
+        if name.ends_with(".service") {
+            service = name.to_string()
+        } else {
+            service = name.to_string() + ".service"
+        }
+
+        let m = try!(Message::new_method_call("org.freedesktop.systemd1",
+                                              "/org/freedesktop/systemd1",
+                                              "org.freedesktop.systemd1.Manager",
+                                              "RestartUnit"))
             .append2(service.clone(), "replace");
 
 
