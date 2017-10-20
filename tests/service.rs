@@ -4,10 +4,13 @@ extern crate specinfra;
 use specinfra::backend;
 
 #[test]
-fn service_resource() {
+fn service_resource_with_inline_provider() {
     let b = backend::direct::Direct::new();
     let s = specinfra::new(&b).unwrap();
+    test_service_resource(s);
+}
 
+fn test_service_resource(s: specinfra::Specinfra) {
     let dbus = s.service("dbus.service");
     assert!(dbus.is_running().unwrap());
 
