@@ -53,6 +53,22 @@ pub trait InlineProvider: Debug {
         Err(From::from(e))
     }
 
+    fn reload(&self, &str) -> Result<Output, Error> {
+        let e = HandleFuncNotDefined {
+            provider: format!("{:?}", self),
+            func: "reload".to_string(),
+        };
+        Err(From::from(e))
+    }
+
+    fn restart(&self, &str) -> Result<Output, Error> {
+        let e = HandleFuncNotDefined {
+            provider: format!("{:?}", self),
+            func: "restart".to_string(),
+        };
+        Err(From::from(e))
+    }
+
     fn box_clone(&self) -> Box<InlineProvider>;
 }
 

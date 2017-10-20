@@ -55,4 +55,16 @@ impl<'a> Service<'a> {
             .handle(self.provider.stop(self.name))
             .and_then(Output::to_bool)
     }
+
+    pub fn reload(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.reload(self.name))
+            .and_then(Output::to_bool)
+    }
+
+    pub fn restart(&self) -> Result<bool, error::Error> {
+        self.backend
+            .handle(self.provider.restart(self.name))
+            .and_then(Output::to_bool)
+    }
 }
