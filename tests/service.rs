@@ -31,10 +31,11 @@ fn test_service_resource(s: Specinfra) {
     assert!(sshd.is_enabled().unwrap());
 
     let nginx = s.service("nginx");
-    assert!(nginx.enable().unwrap());
-    assert!(nginx.is_enabled().unwrap());
     assert!(nginx.disable().unwrap());
     assert_eq!(nginx.is_enabled().unwrap(), false);
+
+    assert!(nginx.enable().unwrap());
+    assert!(nginx.is_enabled().unwrap());
 
     assert!(nginx.start().unwrap());
     assert!(nginx.is_running().unwrap());
