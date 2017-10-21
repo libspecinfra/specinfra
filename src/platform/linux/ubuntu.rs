@@ -52,7 +52,7 @@ impl Platform for Ubuntu {
 
         let sp = ServiceProvider {
             inline: Box::new(service::inline::systemd::Systemd),
-            shell: Box::new(service::shell::null::Null),
+            shell: Box::new(service::shell::systemd::Systemd),
         };
 
         let p = Providers {
