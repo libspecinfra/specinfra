@@ -2,6 +2,8 @@
 extern crate specinfra;
 
 use specinfra::backend;
+use specinfra::Specinfra;
+use specinfra::provider::service::inline::null::Null;
 
 #[test]
 fn service_resource_with_inline_provider() {
@@ -10,7 +12,15 @@ fn service_resource_with_inline_provider() {
     test_service_resource(s);
 }
 
-fn test_service_resource(s: specinfra::Specinfra) {
+#[test]
+fn service_resource_with_shell_provider() {
+    let b = backend::direct::Direct::new();
+    let mut s = specinfra::new(&b).unwrap();
+    s.providers.service.inline = Box::new(Null);
+    test_service_resource(s);
+}
+
+fn test_service_resource(s: Specinfra) {
     let dbus = s.service("dbus.service");
     assert!(dbus.is_running().unwrap());
 
