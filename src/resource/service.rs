@@ -146,3 +146,19 @@ pub extern "C" fn resource_service_enable(ptr: *mut Service) -> int32_t {
         }
     }
 }
+
+#[no_mangle]
+pub extern "C" fn resource_service_disable(ptr: *mut Service) -> int32_t {
+    let s = unsafe {
+        assert!(!ptr.is_null());
+        &mut *ptr
+    };
+
+    match s.disable() {
+        Ok(f) => if f { 1 } else { 0 },
+        Err(e) => {
+            s.error = Some(e);
+            return -1;
+        }
+    }
+}
