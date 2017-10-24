@@ -84,3 +84,18 @@ pub extern "C" fn specinfra_file(ptr: *const Specinfra, name: *const c_char) -> 
 
     Box::into_raw(Box::new(s.file(name.to_str().unwrap())))
 }
+
+#[no_mangle]
+pub extern "C" fn specinfra_service(ptr: *const Specinfra, name: *const c_char) -> *const Service {
+    let s = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    let name = unsafe {
+        assert!(!name.is_null());
+        CStr::from_ptr(name)
+    };
+
+    Box::into_raw(Box::new(s.service(name.to_str().unwrap())))
+}
