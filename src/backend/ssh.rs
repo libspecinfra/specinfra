@@ -1,4 +1,4 @@
-extern crate ssh2;
+pub extern crate ssh2;
 
 use libc::c_char;
 use std::ffi::CStr;
