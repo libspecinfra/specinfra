@@ -1,7 +1,3 @@
-pub mod direct;
-pub mod ssh;
-pub mod error;
-
 use std::result::Result;
 
 use platform::platform::Platform;
@@ -26,3 +22,15 @@ pub trait Backend {
 pub struct BackendWrapper {
     pub backend: Box<Backend>,
 }
+
+pub mod direct;
+pub mod error;
+
+#[cfg(feature="backend-ssh")]
+pub mod ssh;
+
+#[cfg(not(feature="backend-ssh"))]
+pub mod _ssh;
+
+#[cfg(not(feature="backend-ssh"))]
+pub use self::_ssh as ssh;

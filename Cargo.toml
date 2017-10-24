@@ -10,7 +10,7 @@ description = "This is the Rust implementation of Ruby specinfra gem"
 uname = "0.1.1"
 libc = "0.2.30"
 users = "0.5.0"
-ssh2 = "0.3.1"
+ssh2 = { version = "0.3.1", optional = true }
 md5 = "0.3.5"
 sha2 = "0.6.0"
 nix = "0.9.0"
@@ -21,4 +21,6 @@ name = "specinfra"
 crate-type = ["dylib", "rlib"]
 
 [features]
+default = ["backend-ssh"]
 inline-systemd = ["dbus"]
+backend-ssh = ["ssh2"]
