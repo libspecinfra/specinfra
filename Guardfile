@@ -1,10 +1,13 @@
+# notification :gntp, host: '192.168.1.7'
+notification :gntp, host: '172.20.10.3'
+
 guard :shell do
   watch(/.*\/(.*\/)?(.*)\.rs$/) do
-    `cargo test`
+    `cargo test --features inline-systemd`
     if $? == 0 
-      n "cargo test success", "cargo test", :success
+      n "specinfra - cargo test success", "cargo test", :success
     else
-      n "cargo test failed", "cargo test", :failed
+      n "specinfra - cargo test failed", "cargo test", :failed
     end
   end
 end
