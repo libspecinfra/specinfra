@@ -1,4 +1,4 @@
-#![cfg(feature="inline-systemd")]
+#![cfg(feature="test-service")]
 extern crate specinfra;
 
 use specinfra::backend;
