@@ -26,7 +26,7 @@ pub struct Specinfra<'a> {
 pub fn new(b: &Backend) -> Result<Specinfra, Error> {
     let p = try!(b.detect_platform()
         .ok_or(DetectError { message: "Failed to detect platform".to_string() }));
-    let providers = p.get_providers();
+    let providers = try!(p.get_providers());
     Ok(Specinfra {
         backend: b,
         platform: p,

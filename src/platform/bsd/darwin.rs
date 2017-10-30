@@ -1,7 +1,10 @@
+use std::result::Result;
+
 use uname;
 
 use backend::Backend;
 use platform::platform::Platform;
+use platform::error::Error;
 use provider::Providers;
 use provider::file;
 use provider::file::FileProvider;
@@ -55,7 +58,7 @@ impl Platform for Darwin {
         }
     }
 
-    fn get_providers(&self) -> Box<Providers> {
+    fn get_providers(&self) -> Result<Box<Providers>, Error> {
         let fp = FileProvider {
             inline: Box::new(file::inline::posix::Posix),
             shell: Box::new(file::shell::bsd::Bsd),
@@ -71,6 +74,6 @@ impl Platform for Darwin {
             service: Box::new(sp),
         };
 
-        Box::new(p)
+        Ok(Box::new(p))
     }
 }
