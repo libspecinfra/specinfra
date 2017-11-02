@@ -12,7 +12,7 @@ use std::io::prelude::*;
 use backend;
 use backend::error::Error;
 use backend::Backend;
-use backend::CommandResult;
+use backend::command::CommandResult;
 use provider;
 use provider::Output;
 use platform::platform::Platform;
