@@ -1,16 +1,10 @@
 use std::result::Result;
 
+use backend::command::CommandResult;
 use platform::platform::Platform;
 use provider::Output;
 use provider::HandleFunc;
 use provider;
-
-pub struct CommandResult {
-    pub stdout: String,
-    pub stderr: String,
-    pub success: bool,
-    pub code: i32,
-}
 
 pub trait Backend {
     fn detect_platform(&self) -> Option<Box<Platform>>;
@@ -23,6 +17,7 @@ pub struct BackendWrapper {
     pub backend: Box<Backend>,
 }
 
+pub mod command;
 pub mod direct;
 pub mod error;
 

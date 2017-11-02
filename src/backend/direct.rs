@@ -4,7 +4,7 @@ use std::str;
 
 use backend;
 use backend::Backend;
-use backend::CommandResult;
+use backend::command::CommandResult;
 use provider::error::Error;
 use provider::HandleFunc;
 use provider::Output;
