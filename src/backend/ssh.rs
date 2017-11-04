@@ -12,6 +12,7 @@ use std::io::prelude::*;
 use backend;
 use backend::error::Error;
 use backend::Backend;
+use backend::command::Command;
 use backend::command::CommandResult;
 use provider;
 use provider::Output;
@@ -72,9 +73,9 @@ impl Backend for SSH {
         (handle_func.shell)(self)
     }
 
-    fn run_command(&self, c: &str) -> Result<CommandResult, backend::error::Error> {
+    fn run_command(&self, c: Command) -> Result<CommandResult, backend::error::Error> {
         let mut chan = try!(self.session.channel_session());
-        chan.exec(c).unwrap();
+        chan.exec(&c.string).unwrap();
 
         let mut stdout = String::new();
         chan.read_to_string(&mut stdout).unwrap();
