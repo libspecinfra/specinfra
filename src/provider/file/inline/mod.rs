@@ -13,7 +13,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "mode".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn size(&self, &str) -> Result<Output, Error> {
@@ -21,7 +21,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "size".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn is_file(&self, &str) -> Result<Output, Error> {
@@ -29,7 +29,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "is_file".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn is_directory(&self, &str) -> Result<Output, Error> {
@@ -37,7 +37,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "is_directory".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn is_block_device(&self, &str) -> Result<Output, Error> {
@@ -45,7 +45,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "is_block_device".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn is_character_device(&self, &str) -> Result<Output, Error> {
@@ -53,7 +53,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "is_character_device".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn is_pipe(&self, &str) -> Result<Output, Error> {
@@ -61,7 +61,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "is_pipe".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn is_socket(&self, &str) -> Result<Output, Error> {
@@ -69,7 +69,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "is_socket".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn is_symlink(&self, &str) -> Result<Output, Error> {
@@ -77,7 +77,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "is_symlink".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn exist(&self, &str) -> Result<Output, Error> {
@@ -85,7 +85,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "exist".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn contents(&self, &str) -> Result<Output, Error> {
@@ -93,7 +93,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "contents".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn owner(&self, &str) -> Result<Output, Error> {
@@ -101,7 +101,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "owner".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn group(&self, &str) -> Result<Output, Error> {
@@ -109,7 +109,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "group".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn linked_to(&self, &str) -> Result<Output, Error> {
@@ -117,7 +117,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "linked_to".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn is_readable(&self, &str, Option<&Whom>) -> Result<Output, Error> {
@@ -125,7 +125,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "is_readable".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn is_writable(&self, &str, Option<&Whom>) -> Result<Output, Error> {
@@ -133,7 +133,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "is_writable".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn md5sum(&self, &str) -> Result<Output, Error> {
@@ -141,7 +141,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "md5sum".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn sha256sum(&self, &str) -> Result<Output, Error> {
@@ -149,7 +149,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "sha256sum".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn selinux_label(&self, &str) -> Result<Output, Error> {
@@ -157,7 +157,7 @@ pub trait InlineProvider: Debug {
             provider: format!("{:?}", self),
             func: "selinux_label".to_string(),
         };
-        Err(From::from(e))
+        Err(e.into())
     }
 
     fn box_clone(&self) -> Box<InlineProvider>;

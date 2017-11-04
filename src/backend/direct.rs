@@ -54,7 +54,7 @@ impl Backend for Direct {
                 code: out.status.code().unwrap(),
                 message: try!(String::from_utf8(out.stderr)),
             };
-            return Err(From::from(e));
+            return Err(e.into());
         }
 
         let stdout = try!(String::from_utf8(out.stdout));

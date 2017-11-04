@@ -79,7 +79,7 @@ impl Unix {
         let exist = try!(self.exist(name, b));
         if !try!(Output::to_bool(exist)) {
             let e = StringError { string: format!("{} does not exist", name) };
-            return Err(From::from(e));
+            return Err(e.into());
         }
 
         let res = b.run_command(c);
