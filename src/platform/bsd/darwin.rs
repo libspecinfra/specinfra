@@ -43,7 +43,7 @@ impl Platform for Darwin {
     }
 
     fn shell_detector(&self, b: &Backend) -> Option<Box<Platform>> {
-        let res = b.run_command("uname -sr").unwrap();
+        let res = b.run_command("uname -sr".into()).unwrap();
         let mut iter = res.stdout.split_whitespace();
         let sysname = iter.next().unwrap();
         if sysname == "Darwin" {

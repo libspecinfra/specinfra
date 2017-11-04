@@ -38,7 +38,7 @@ impl Platform for RedHat {
     }
 
     fn shell_detector(&self, b: &Backend) -> Option<Box<Platform>> {
-        let contents = match b.run_command("cat /etc/redhat-release") {
+        let contents = match b.run_command("cat /etc/redhat-release".into()) {
             Err(_) => return None,
             Ok(f) => f,
         };

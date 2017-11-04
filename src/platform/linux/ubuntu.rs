@@ -38,7 +38,7 @@ impl Platform for Ubuntu {
     }
 
     fn shell_detector(&self, b: &Backend) -> Option<Box<Platform>> {
-        let contents = match b.run_command("cat /etc/lsb-release") {
+        let contents = match b.run_command("cat /etc/lsb-release".into()) {
             Err(_) => return None,
             Ok(f) => f,
         };
