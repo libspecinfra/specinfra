@@ -41,35 +41,35 @@ impl Output {
     pub fn to_u32(o: Output) -> Result<u32, error::Error> {
         match o {
             Output::U32(u) => Ok(u),
-            _ => Err(From::from(OutputError)),
+            _ => Err(OutputError.into()),
         }
     }
 
     pub fn to_i32(o: Output) -> Result<i32, error::Error> {
         match o {
             Output::I32(u) => Ok(u),
-            _ => Err(From::from(OutputError)),
+            _ => Err(OutputError.into()),
         }
     }
 
     pub fn to_i64(o: Output) -> Result<i64, error::Error> {
         match o {
             Output::I64(i) => Ok(i),
-            _ => Err(From::from(OutputError)),
+            _ => Err(OutputError.into()),
         }
     }
 
     pub fn to_bool(o: Output) -> Result<bool, error::Error> {
         match o {
             Output::Bool(b) => Ok(b),
-            _ => Err(From::from(OutputError)),
+            _ => Err(OutputError.into()),
         }
     }
 
     pub fn to_string(o: Output) -> Result<String, error::Error> {
         match o {
             Output::Text(s) => Ok(s),
-            _ => Err(From::from(OutputError)),
+            _ => Err(OutputError.into()),
         }
     }
 }

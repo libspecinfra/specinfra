@@ -5,4 +5,5 @@ specinfra.iml
 *.bk
 .vagrant
 *.log
+.ruby-version
 

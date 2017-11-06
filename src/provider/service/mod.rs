@@ -50,6 +50,42 @@ impl ServiceProvider {
             shell: Box::new(move |b| s.disable(name, b)),
         })
     }
+
+    pub fn start(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.start(name)),
+            shell: Box::new(move |b| s.start(name, b)),
+        })
+    }
+
+    pub fn stop(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.stop(name)),
+            shell: Box::new(move |b| s.stop(name, b)),
+        })
+    }
+
+    pub fn reload(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.reload(name)),
+            shell: Box::new(move |b| s.reload(name, b)),
+        })
+    }
+
+    pub fn restart(&self, name: &'static str) -> Box<HandleFunc> {
+        let i = self.inline.clone();
+        let s = self.shell.clone();
+        Box::new(HandleFunc {
+            inline: Box::new(move || i.restart(name)),
+            shell: Box::new(move |b| s.restart(name, b)),
+        })
+    }
 }
 
 pub mod error;

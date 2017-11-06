@@ -42,12 +42,12 @@ impl From<systemd::dbus::arg::TypeMismatchError> for Error {
 
 impl From<systemd::dbus::Error> for provider::error::Error {
     fn from(err: systemd::dbus::Error) -> provider::error::Error {
-        From::from(Error::DBus(err))
+        Error::DBus(err).into()
     }
 }
 
 impl From<systemd::dbus::arg::TypeMismatchError> for provider::error::Error {
     fn from(err: systemd::dbus::arg::TypeMismatchError) -> provider::error::Error {
-        From::from(Error::DBusArgTypeMismatch(err))
+        Error::DBusArgTypeMismatch(err).into()
     }
 }

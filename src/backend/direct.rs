@@ -1,10 +1,10 @@
 use std::result::Result;
 use std::process::Command;
-use std::str;
 
 use backend;
 use backend::Backend;
-use backend::CommandResult;
+use backend::command;
+use backend::command::CommandResult;
 use provider::error::Error;
 use provider::HandleFunc;
 use provider::Output;
@@ -46,15 +46,15 @@ impl Backend for Direct {
         (handle_func.shell)(self)
     }
 
-    fn run_command(&self, c: &str) -> Result<CommandResult, backend::error::Error> {
-        let out = try!(Command::new("sh").args(&["-c", c]).output());
+    fn run_command(&self, c: command::Command) -> Result<CommandResult, backend::error::Error> {
+        let out = try!(Command::new("sh").args(&["-c", &c.string]).output());
 
         if !out.status.success() {
             let e = backend::error::CommandError {
                 code: out.status.code().unwrap(),
                 message: try!(String::from_utf8(out.stderr)),
             };
-            return Err(From::from(e));
+            return Err(e.into());
         }
 
         let stdout = try!(String::from_utf8(out.stdout));

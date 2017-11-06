@@ -1,16 +1,16 @@
-extern crate ssh2;
-
 use std::error;
 use std::string;
 use std::fmt;
 use std::io;
 use std::env;
 
+use backend::ssh;
+
 #[derive(Debug)]
 pub enum Error {
     FromUtf8(string::FromUtf8Error),
     Io(io::Error),
-    Ssh(ssh2::Error),
+    Ssh(ssh::ssh2::Error),
     Env(env::VarError),
     Command(CommandError),
 }
@@ -51,8 +51,8 @@ impl From<io::Error> for Error {
     }
 }
 
-impl From<ssh2::Error> for Error {
-    fn from(err: ssh2::Error) -> Error {
+impl From<ssh::ssh2::Error> for Error {
+    fn from(err: ssh::ssh2::Error) -> Error {
         Error::Ssh(err)
     }
 }

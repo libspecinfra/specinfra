@@ -1,8 +1,10 @@
 use std::fs::File;
 use std::io::prelude::*;
+use std::result::Result;
 
 use backend::Backend;
 use platform::platform::Platform;
+use platform::error::Error;
 use provider::Providers;
 use provider::file::FileProvider;
 use provider::service::ServiceProvider;
@@ -36,7 +38,7 @@ impl Platform for Ubuntu {
     }
 
     fn shell_detector(&self, b: &Backend) -> Option<Box<Platform>> {
-        let contents = match b.run_command("cat /etc/lsb-release") {
+        let contents = match b.run_command("cat /etc/lsb-release".into()) {
             Err(_) => return None,
             Ok(f) => f,
         };
@@ -44,7 +46,7 @@ impl Platform for Ubuntu {
         self.detect_by_lsb_release(&contents.stdout)
     }
 
-    fn get_providers(&self) -> Box<Providers> {
+    fn get_providers(&self) -> Result<Box<Providers>, Error> {
         let fp = FileProvider {
             inline: Box::new(file::inline::posix::Posix),
             shell: Box::new(file::shell::linux::Linux),
@@ -52,7 +54,7 @@ impl Platform for Ubuntu {
 
         let sp = ServiceProvider {
             inline: Box::new(service::inline::systemd::Systemd),
-            shell: Box::new(service::shell::null::Null),
+            shell: Box::new(service::shell::systemd::Systemd),
         };
 
         let p = Providers {
@@ -60,7 +62,7 @@ impl Platform for Ubuntu {
             service: Box::new(sp),
         };
 
-        Box::new(p)
+        Ok(Box::new(p))
     }
 }
 

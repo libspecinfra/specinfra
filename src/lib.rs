@@ -11,15 +11,11 @@ use libc::c_char;
 
 use backend::Backend;
 use platform::platform::Platform;
+use platform::error::Error;
+use platform::error::DetectError;
 use resource::file::File;
 use resource::service::Service;
 use provider::Providers;
-
-pub mod backend;
-pub mod platform;
-pub mod resource;
-pub mod provider;
-pub mod error;
 
 pub struct Specinfra<'a> {
     pub backend: &'a Backend,
@@ -27,9 +23,10 @@ pub struct Specinfra<'a> {
     pub providers: Box<Providers>,
 }
 
-pub fn new(b: &Backend) -> Result<Specinfra, error::Error> {
-    let p = try!(b.detect_platform().ok_or(platform::error::Error));
-    let providers = p.get_providers();
+pub fn new(b: &Backend) -> Result<Specinfra, Error> {
+    let p = try!(b.detect_platform()
+        .ok_or(DetectError { message: "Failed to detect platform".to_string() }));
+    let providers = try!(p.get_providers());
     Ok(Specinfra {
         backend: b,
         platform: p,
@@ -84,3 +81,24 @@ pub extern "C" fn specinfra_file(ptr: *const Specinfra, name: *const c_char) -> 
 
     Box::into_raw(Box::new(s.file(name.to_str().unwrap())))
 }
+
+#[no_mangle]
+pub extern "C" fn specinfra_service(ptr: *const Specinfra, name: *const c_char) -> *const Service {
+    let s = unsafe {
+        assert!(!ptr.is_null());
+        &*ptr
+    };
+
+    let name = unsafe {
+        assert!(!name.is_null());
+        CStr::from_ptr(name)
+    };
+
+    Box::into_raw(Box::new(s.service(name.to_str().unwrap())))
+}
+
+pub mod backend;
+pub mod platform;
+pub mod resource;
+pub mod provider;
+pub mod error;
