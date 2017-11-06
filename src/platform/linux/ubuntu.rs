@@ -52,9 +52,21 @@ impl Platform for Ubuntu {
             shell: Box::new(file::shell::linux::Linux),
         };
 
-        let sp = ServiceProvider {
-            inline: Box::new(service::inline::systemd::Systemd),
-            shell: Box::new(service::shell::systemd::Systemd),
+        let r = try!(self.release.parse::<f32>());
+
+        let sp = match r {
+            n if n >= 16.0 => {
+                ServiceProvider {
+                    inline: Box::new(service::inline::systemd::Systemd),
+                    shell: Box::new(service::shell::systemd::Systemd),
+                }
+            }
+            _ => {
+                ServiceProvider {
+                    inline: Box::new(service::inline::null::Null),
+                    shell: Box::new(service::shell::ubuntu_init::UbuntuInit),
+                }
+            }
         };
 
         let p = Providers {
