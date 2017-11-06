@@ -139,7 +139,6 @@ use backend::BackendWrapper;
 
 #[no_mangle]
 pub extern "C" fn backend_ssh_new(s: *const SSHInterface) -> *mut BackendWrapper {
-    // let target = unsafe { &*s };
     let s = SSHBuilder::new().set_target(s).finalize().unwrap();
     let b = BackendWrapper { backend: Box::new(s) };
     Box::into_raw(Box::new(b))
