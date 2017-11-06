@@ -1,10 +1,10 @@
 pub extern crate ssh2;
 
-use libc::{c_char,c_uint};
+use libc::c_char;
 use std::ffi::CStr;
+use regex::Regex;
 
 use std::result::Result;
-use std::str;
 use std::net::TcpStream;
 use std::io::prelude::*;
 use std::path::Path;
@@ -30,7 +30,6 @@ pub struct SSHInterface {
     user: *const c_char,
     password: *const c_char,
     key_file: *const c_char,
-    port: *const c_uint,
 }
 
 pub struct SSHBuilder {
@@ -38,7 +37,6 @@ pub struct SSHBuilder {
     user: String,
     password: String,
     key_file: String,
-    port: u32,
 }
 
 impl SSHBuilder {
@@ -48,7 +46,6 @@ impl SSHBuilder {
             user: "".to_string(),
             password: "".to_string(),
             key_file: "".to_string(),
-            port: 22
         }
     }
 
@@ -65,8 +62,14 @@ impl SSHBuilder {
 
     pub fn finalize(self) -> Result<SSH, Error> {
         let hostname = self.hostname;
-        let port = self.port.to_string();
-        let remote_addr = hostname + ":" + &port;
+        let re = Regex::new(r":\d+$").unwrap();
+        let remote_addr: String;
+        if re.is_match(&hostname) {
+            remote_addr = hostname;
+        } else {
+            remote_addr = hostname + ":22";
+        }
+
         let user = self.user;
         let password = self.password;
         let key_file = self.key_file;
