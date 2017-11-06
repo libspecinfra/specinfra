@@ -13,7 +13,7 @@ pub struct Bsd;
 
 impl ShellProvider for Bsd {
     fn mode(&self, name: &str, b: &Backend) -> Result<Output, Error> {
-        let c = Command::new(format!("stat -f%Lp {}", name));
+        let c = Command::new(&format!("stat -f%Lp {}", name));
         let res = try!(b.run_command(c));
         let m = try!(i32::from_str_radix(&res.stdout, 8));
         Ok(Output::I32(m))
@@ -60,13 +60,13 @@ impl ShellProvider for Bsd {
     }
 
     fn owner(&self, name: &str, b: &Backend) -> Result<Output, Error> {
-        let c = Command::new(format!("stat -f%Su {}", name));
+        let c = Command::new(&format!("stat -f%Su {}", name));
         let res = try!(b.run_command(c));
         Ok(Output::Text(res.stdout))
     }
 
     fn group(&self, name: &str, b: &Backend) -> Result<Output, Error> {
-        let c = Command::new(format!("stat -f%Sg {}", name));
+        let c = Command::new(&format!("stat -f%Sg {}", name));
         let res = try!(b.run_command(c));
         Ok(Output::Text(res.stdout))
     }
@@ -106,21 +106,21 @@ impl ShellProvider for Bsd {
     }
 
     fn md5sum(&self, name: &str, b: &Backend) -> Result<Output, Error> {
-        let mut c = Command::new(format!("md5 {}", name));
+        let mut c = Command::new(&format!("md5 {}", name));
         c.pipe("awk '{{print $4}}'");
         let res = try!(b.run_command(c));
         Ok(Output::Text(res.stdout))
     }
 
     fn sha256sum(&self, name: &str, b: &Backend) -> Result<Output, Error> {
-        let mut c = Command::new(format!("shasum -a 256 {}", name));
+        let mut c = Command::new(&format!("shasum -a 256 {}", name));
         c.pipe("awk '{{print $1}}'");
         let res = try!(b.run_command(c));
         Ok(Output::Text(res.stdout))
     }
 
     fn size(&self, name: &str, b: &Backend) -> Result<Output, Error> {
-        let c = Command::new(format!("stat -f%z {}", name));
+        let c = Command::new(&format!("stat -f%z {}", name));
         let res = try!(b.run_command(c));
         Ok(Output::I64(try!(res.stdout.parse::<i64>())))
     }
@@ -132,12 +132,12 @@ impl ShellProvider for Bsd {
 
 impl Bsd {
     fn is_readable_by_user(&self, name: &str, user: &str, b: &Backend) -> Result<Output, Error> {
-        let c = Command::new(format!("sudo -u {} -s test -r {}", user, name));
+        let c = Command::new(&format!("sudo -u {} -s test -r {}", user, name));
         Unix.is_something(name, b, c)
     }
 
     fn is_writable_by_user(&self, name: &str, user: &str, b: &Backend) -> Result<Output, Error> {
-        let c = Command::new(format!("sudo -u {} -s test -w {}", user, name));
+        let c = Command::new(&format!("sudo -u {} -s test -w {}", user, name));
         Unix.is_something(name, b, c)
     }
 }

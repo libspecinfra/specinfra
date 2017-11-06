@@ -10,8 +10,8 @@ pub struct Command {
 }
 
 impl Command {
-    pub fn new(s: String) -> Command {
-        Command { string: s }
+    pub fn new(s: &str) -> Command {
+        Command { string: s.into() }
     }
 
     pub fn and(&mut self, s: &str) -> &Command {
