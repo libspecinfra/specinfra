@@ -24,6 +24,7 @@ pub struct SSH {
     _tcp: TcpStream,
 }
 
+#[derive(Clone, Copy, Debug)]
 pub struct SSHBuilder<'a> {
     host: Option<&'a str>,
     port: Option<usize>,
@@ -147,20 +148,101 @@ impl Backend for SSH {
 use backend::BackendWrapper;
 
 #[no_mangle]
-pub extern "C" fn backend_ssh_new(host: *const c_char) -> *mut BackendWrapper {
+pub extern "C" fn backend_ssh_builder_new<'a>(host: *const c_char) -> *mut SSHBuilder<'a> {
     let host = unsafe {
         assert!(!host.is_null());
         CStr::from_ptr(host)
     };
     let host_str = host.to_str().unwrap();
 
-    let s = SSHBuilder::new().host(host_str).finalize().unwrap();
-    let b = BackendWrapper { backend: Box::new(s) };
+    let b = SSHBuilder::new().host(host_str);
     Box::into_raw(Box::new(b))
 }
 
 #[no_mangle]
-pub extern "C" fn backend_ssh_free(ptr: *mut BackendWrapper) {
+pub extern "C" fn backend_ssh_builder_free(ptr: *mut SSHBuilder) {
+    if ptr.is_null() {
+        return;
+    }
+    unsafe {
+        Box::from_raw(ptr);
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn backend_ssh_builder_user(ptr: *mut SSHBuilder,
+                                           u: *const c_char)
+                                           -> *mut SSHBuilder {
+    let b = unsafe {
+        assert!(!ptr.is_null());
+        &mut *ptr
+    };
+
+    let user = unsafe {
+        assert!(!u.is_null());
+        CStr::from_ptr(u)
+    };
+    let user_str = user.to_str().unwrap();
+    Box::into_raw(Box::new(b.user(user_str)))
+}
+
+#[no_mangle]
+pub extern "C" fn backend_ssh_builder_password(ptr: *mut SSHBuilder,
+                                               p: *const c_char)
+                                               -> *mut SSHBuilder {
+    let b = unsafe {
+        assert!(!ptr.is_null());
+        &mut *ptr
+    };
+
+    let password = unsafe {
+        assert!(!p.is_null());
+        CStr::from_ptr(p)
+    };
+    let password_str = password.to_str().unwrap();
+    Box::into_raw(Box::new(b.password(password_str)))
+}
+
+#[no_mangle]
+pub extern "C" fn backend_ssh_builder_key_file(ptr: *mut SSHBuilder,
+                                               k: *const c_char)
+                                               -> *mut SSHBuilder {
+    let b = unsafe {
+        assert!(!ptr.is_null());
+        &mut *ptr
+    };
+
+    let key_file = unsafe {
+        assert!(!k.is_null());
+        CStr::from_ptr(k)
+    };
+    let key_file_str = key_file.to_str().unwrap();
+    Box::into_raw(Box::new(b.key_file(key_file_str)))
+}
+
+#[no_mangle]
+pub extern "C" fn backend_ssh_builder_port(ptr: *mut SSHBuilder, p: usize) -> *mut SSHBuilder {
+    let b = unsafe {
+        assert!(!ptr.is_null());
+        &mut *ptr
+    };
+
+    Box::into_raw(Box::new(b.port(p)))
+}
+
+#[no_mangle]
+pub extern "C" fn backend_ssh_builder_finalize(ptr: *mut SSHBuilder) -> *mut BackendWrapper {
+    let b = unsafe {
+        assert!(!ptr.is_null());
+        &mut *ptr
+    };
+
+    let s = BackendWrapper { backend: Box::new(b.finalize().unwrap()) };
+    Box::into_raw(Box::new(s))
+}
+
+#[no_mangle]
+pub extern "C" fn backend_ssh_free(ptr: *mut SSH) {
     if ptr.is_null() {
         return;
     }
