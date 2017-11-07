@@ -81,3 +81,5 @@ impl Clone for Box<ShellProvider> {
 
 pub mod null;
 pub mod systemd;
+pub mod ubuntu_init;
+pub mod sysvinit;

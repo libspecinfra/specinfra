@@ -4,6 +4,7 @@ extern crate users;
 extern crate md5;
 extern crate sha2;
 extern crate nix;
+extern crate version_compare;
 extern crate regex;
 
 use std::ffi::CStr;
