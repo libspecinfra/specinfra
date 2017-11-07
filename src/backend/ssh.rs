@@ -6,8 +6,8 @@ use std::ffi::CStr;
 use std::result::Result;
 use std::str;
 use std::net::TcpStream;
-use std::env;
 use std::io::prelude::*;
+use std::path::Path;
 
 use backend;
 use backend::error::Error;
@@ -24,28 +24,72 @@ pub struct SSH {
     _tcp: TcpStream,
 }
 
-pub struct SSHBuilder {
-    hostname: Option<String>,
+pub struct SSHBuilder<'a> {
+    host: Option<&'a str>,
+    port: Option<usize>,
+    user: Option<&'a str>,
+    password: Option<&'a str>,
+    key_file: Option<&'a str>,
 }
 
-impl SSHBuilder {
+impl<'a> SSHBuilder<'a> {
     pub fn new() -> Self {
-        SSHBuilder { hostname: None }
+        SSHBuilder {
+            host: None,
+            port: None,
+            user: None,
+            password: None,
+            key_file: None,
+        }
     }
 
-    pub fn hostname(mut self, h: &str) -> Self {
-        self.hostname = Some(h.to_string());
+    pub fn host(mut self, h: &'a str) -> Self {
+        self.host = Some(h);
+        self
+    }
+
+    pub fn port(mut self, p: usize) -> Self {
+        self.port = Some(p);
+        self
+    }
+
+    pub fn user(mut self, u: &'a str) -> Self {
+        self.user = Some(u);
+        self
+    }
+
+    pub fn password(mut self, p: &'a str) -> Self {
+        self.password = Some(p);
+        self
+    }
+
+    pub fn key_file(mut self, k: &'a str) -> Self {
+        self.key_file = Some(k);
         self
     }
 
     pub fn finalize(self) -> Result<SSH, Error> {
-        let hostname = self.hostname.unwrap();
-        let remote_addr = hostname + ":22";
+        let host = self.host.unwrap();
+        let remote_addr = match self.port {
+            Some(p) => host.to_string() + ":" + &p.to_string(),
+            None => host.to_string() + ":22",
+        };
+
         let tcp = try!(TcpStream::connect(remote_addr));
         let mut session = ssh2::Session::new().unwrap();
         try!(session.handshake(&tcp));
-        let user = try!(env::var("USER"));
-        try!(session.userauth_agent(&user));
+
+        let user = self.user.unwrap();
+
+        match self.key_file {
+            Some(k) => try!(session.userauth_pubkey_file(user, None, Path::new(k), None)),
+            None => {
+                match self.password {
+                    Some(p) => try!(session.userauth_password(user, p)),
+                    None => try!(session.userauth_agent(user)),
+                }
+            }
+        }
 
         let ssh = SSH {
             session: session,
@@ -110,7 +154,7 @@ pub extern "C" fn backend_ssh_new(host: *const c_char) -> *mut BackendWrapper {
     };
     let host_str = host.to_str().unwrap();
 
-    let s = SSHBuilder::new().hostname(host_str).finalize().unwrap();
+    let s = SSHBuilder::new().host(host_str).finalize().unwrap();
     let b = BackendWrapper { backend: Box::new(s) };
     Box::into_raw(Box::new(b))
 }
