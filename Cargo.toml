@@ -15,6 +15,7 @@ md5 = "0.3.5"
 sha2 = "0.6.0"
 nix = "0.9.0"
 dbus = { version = "0.5.4", optional = true }
+version-compare = "0.0.6"
 
 [lib]
 name = "specinfra"

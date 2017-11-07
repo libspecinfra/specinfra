@@ -2,6 +2,8 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::result::Result;
 
+use version_compare::Version;
+
 use backend::Backend;
 use platform::platform::Platform;
 use platform::error::Error;
@@ -52,9 +54,22 @@ impl Platform for RedHat {
             shell: Box::new(file::shell::linux::Linux),
         };
 
-        let sp = ServiceProvider {
-            inline: Box::new(service::inline::systemd::Systemd),
-            shell: Box::new(service::shell::systemd::Systemd),
+        let r = Version::from(&self.release).unwrap();
+        let r7 = Version::from("7").unwrap();
+
+        let sp = match r {
+            ref n if n >= &r7 => {
+                ServiceProvider {
+                    inline: Box::new(service::inline::systemd::Systemd),
+                    shell: Box::new(service::shell::systemd::Systemd),
+                }
+            }
+            _ => {
+                ServiceProvider {
+                    inline: Box::new(service::inline::null::Null),
+                    shell: Box::new(service::shell::sysvinit::SysVInit),
+                }
+            }
         };
 
         let p = Providers {
@@ -69,9 +84,15 @@ impl Platform for RedHat {
 impl RedHat {
     fn detect_by_redhat_release(&self, contents: &str) -> Option<Box<Platform>> {
         let mut line = contents.split(" ");
+        let name = line.nth(0).unwrap().trim().to_string();
+        let mut release = line.nth(1).unwrap().trim().to_string();
+        if release == "release" {
+            release = line.nth(0).unwrap().trim().to_string();
+        }
+
         let r = RedHat {
-            name: line.nth(0).unwrap().trim().to_string(),
-            release: line.nth(2).unwrap().trim().to_string(),
+            name: name,
+            release: release,
         };
 
         Some(Box::new(r))
