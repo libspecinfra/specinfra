@@ -14,9 +14,7 @@ pub trait Backend {
 }
 
 // Wrapper struct for FFI
-pub struct BackendWrapper {
-    pub backend: Box<Backend>,
-}
+pub struct BackendWrapper(pub Box<Backend>);
 
 pub mod command;
 pub mod direct;

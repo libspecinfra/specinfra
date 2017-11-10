@@ -55,7 +55,7 @@ pub extern "C" fn specinfra_new<'a>(ptr: *const BackendWrapper) -> *const Specin
         assert!(!ptr.is_null());
         &*ptr
     };
-    Box::into_raw(Box::new(self::new(&*b.backend).unwrap()))
+    Box::into_raw(Box::new(self::new(&*b.0).unwrap()))
 }
 
 #[no_mangle]
