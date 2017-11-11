@@ -76,7 +76,7 @@ use backend::BackendWrapper;
 
 #[no_mangle]
 pub extern "C" fn backend_direct_new() -> *mut BackendWrapper {
-    let b = BackendWrapper { backend: Box::new(Direct::new()) };
+    let b = BackendWrapper(Box::new(Direct::new()));
     Box::into_raw(Box::new(b))
 }
 

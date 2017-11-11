@@ -237,7 +237,7 @@ pub extern "C" fn backend_ssh_builder_finalize(ptr: *mut SSHBuilder) -> *mut Bac
         &mut *ptr
     };
 
-    let s = BackendWrapper { backend: Box::new(b.finalize().unwrap()) };
+    let s = BackendWrapper(Box::new(b.finalize().unwrap()));
     Box::into_raw(Box::new(s))
 }
 
