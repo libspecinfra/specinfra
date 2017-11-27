@@ -82,7 +82,8 @@ impl Posix {
 
 impl InlineProvider for Posix {
     fn mode(&self, name: &str) -> Result<Output, Error> {
-        let res = try!(fs::metadata(name).map(|m| Output::I32(m.permissions().mode() as i32)));
+        let res = try!(fs::metadata(name)
+            .map(|m| Output::I32((m.permissions().mode() & 0o7777) as i32)));
         Ok(res)
     }
 
