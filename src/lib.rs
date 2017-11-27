@@ -15,6 +15,7 @@ use platform::platform::Platform;
 use platform::error::Error;
 use platform::error::DetectError;
 use resource::file::File;
+use resource::package::Package;
 use resource::service::Service;
 use provider::Providers;
 
@@ -42,6 +43,10 @@ impl<'a> Specinfra<'a> {
 
     pub fn service(&self, name: &'static str) -> Service {
         Service::new(name, self.backend, &self.providers.service)
+    }
+
+    pub fn package(&self, name: &'static str) -> Package {
+        Package::new(name, self.backend, &self.providers.package)
     }
 }
 

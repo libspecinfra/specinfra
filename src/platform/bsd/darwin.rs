@@ -10,6 +10,8 @@ use provider::file;
 use provider::file::FileProvider;
 use provider::service;
 use provider::service::ServiceProvider;
+use provider::package;
+use provider::package::PackageProvider;
 
 #[derive(Clone, Debug)]
 pub struct Darwin {
@@ -69,9 +71,15 @@ impl Platform for Darwin {
             shell: Box::new(service::shell::null::Null),
         };
 
+        let pp = PackageProvider {
+            inline: Box::new(package::inline::null::Null),
+            shell: Box::new(package::shell::null::Null),
+        };
+
         let p = Providers {
             file: Box::new(fp),
             service: Box::new(sp),
+            package: Box::new(pp),
         };
 
         Ok(Box::new(p))
