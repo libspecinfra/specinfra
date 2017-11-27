@@ -6,6 +6,7 @@ use backend::Backend;
 
 pub struct Providers {
     pub file: Box<file::FileProvider>,
+    pub package: Box<package::PackageProvider>,
     pub service: Box<service::ServiceProvider>,
 }
 
@@ -76,4 +77,5 @@ impl Output {
 
 pub mod error;
 pub mod file;
+pub mod package;
 pub mod service;
