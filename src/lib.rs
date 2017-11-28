@@ -45,8 +45,8 @@ impl<'a> Specinfra<'a> {
         Service::new(name, self.backend, &self.providers.service)
     }
 
-    pub fn package(&self, name: &'static str) -> Package {
-        Package::new(name, self.backend, &self.providers.package)
+    pub fn package(&self, name: &'static str, version: Option<&'static str>) -> Package {
+        Package::new(name, version, self.backend, &self.providers.package)
     }
 }
 
