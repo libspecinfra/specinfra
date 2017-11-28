@@ -10,6 +10,8 @@ Vagrant.configure("2") do |config|
       apt-get install -y gcc libssl-dev pkg-config cmake libdbus-glib-1-dev
       curl https://sh.rustup.rs -sSf | sh -s -- -y
     EOF
+
+    c.vm.network "private_network", ip: "192.168.20.103"
   end
 
   config.vm.define :trusty64 do |c|
