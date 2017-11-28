@@ -73,7 +73,7 @@ impl Platform for Ubuntu {
 
         let pp = PackageProvider {
             inline: Box::new(package::inline::null::Null),
-            shell: Box::new(package::shell::null::Null),
+            shell: Box::new(package::shell::apt::Apt),
         };
 
         let p = Providers {
