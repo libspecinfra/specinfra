@@ -48,4 +48,5 @@ impl Clone for Box<ShellProvider> {
 }
 
 pub mod null;
+pub mod apt;
 pub mod yum;
