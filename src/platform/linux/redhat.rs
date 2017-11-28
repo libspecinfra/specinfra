@@ -76,7 +76,7 @@ impl Platform for RedHat {
 
         let pp = PackageProvider {
             inline: Box::new(package::inline::null::Null),
-            shell: Box::new(package::shell::null::Null),
+            shell: Box::new(package::shell::yum::Yum),
         };
 
         let p = Providers {
