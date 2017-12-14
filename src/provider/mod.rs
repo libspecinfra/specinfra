@@ -8,6 +8,7 @@ pub struct Providers {
     pub file: Box<file::FileProvider>,
     pub package: Box<package::PackageProvider>,
     pub service: Box<service::ServiceProvider>,
+    pub port: Box<port::PortProvider>,
 }
 
 pub struct HandleFunc {
@@ -78,4 +79,5 @@ impl Output {
 pub mod error;
 pub mod file;
 pub mod package;
+pub mod port;
 pub mod service;

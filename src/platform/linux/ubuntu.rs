@@ -12,6 +12,8 @@ use provider::file;
 use provider::service;
 use provider::package;
 use provider::package::PackageProvider;
+use provider::port;
+use provider::port::PortProvider;
 
 #[derive(Clone, Debug)]
 pub struct Ubuntu {
@@ -49,14 +51,14 @@ impl Platform for Ubuntu {
     }
 
     fn get_providers(&self) -> Result<Box<Providers>, Error> {
-        let fp = FileProvider {
+        let file_provider = FileProvider {
             inline: Box::new(file::inline::posix::Posix),
             shell: Box::new(file::shell::linux::Linux),
         };
 
         let r = try!(self.release.parse::<f32>());
 
-        let sp = match r {
+        let service_provider = match r {
             n if n >= 16.0 => {
                 ServiceProvider {
                     inline: Box::new(service::inline::systemd::Systemd),
@@ -71,15 +73,21 @@ impl Platform for Ubuntu {
             }
         };
 
-        let pp = PackageProvider {
+        let package_provider = PackageProvider {
             inline: Box::new(package::inline::null::Null),
             shell: Box::new(package::shell::apt::Apt),
         };
 
+        let port_provider = PortProvider {
+            inline: Box::new(port::inline::null::Null),
+            shell: Box::new(port::shell::netstat::Netstat),
+        };
+
         let p = Providers {
-            file: Box::new(fp),
-            service: Box::new(sp),
-            package: Box::new(pp),
+            file: Box::new(file_provider),
+            service: Box::new(service_provider),
+            package: Box::new(package_provider),
+            port: Box::new(port_provider),
         };
 
         Ok(Box::new(p))
