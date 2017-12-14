@@ -88,37 +88,35 @@ This matrix shows which resources support which type of inline providers.
 
 ### Platforms and shell providers
 
-This matrix shows which shell providers support which platforms.
-
-| Platforms                    | File                     | Service                                | Package                  |
-|------------------------------|--------------------------|----------------------------------------|--------------------------|
-| macOS                        | :heavy_check_mark:       |                                        |                          |
-| Ubuntu                       | :heavy_check_mark:       | :heavy_check_mark: (trusty and xenial) | :heavy_check_mark: (apt) |
-| AIX                          | :heavy_multiplication_x: |                                        |                          |
-| Alpine Linux                 | :heavy_multiplication_x: |                                        |                          |
-| Amazon Linux                 | :heavy_multiplication_x: |                                        |                          |
-| Arch Linux                   | :heavy_multiplication_x: |                                        |                          |
-| CoreOS                       | :heavy_multiplication_x: |                                        |                          |
-| Cumulus Linux                | :heavy_multiplication_x: |                                        |                          |
-| Debian Linux                 | :heavy_multiplication_x: |                                        |                          |
-| elementary OS                | :heavy_multiplication_x: |                                        |                          |
-| EOS(Arista)                  | :heavy_multiplication_x: |                                        |                          |
-| VMWare ESXi                  | :heavy_multiplication_x: |                                        |                          |
-| Fedora                       | :heavy_multiplication_x: |                                        |                          |
-| FreeBSD                      | :heavy_multiplication_x: |                                        |                          |
-| Gentoo Linux                 | :heavy_multiplication_x: |                                        |                          |
-| Linux MInt                   | :heavy_multiplication_x: |                                        |                          |
-| NixOS                        | :heavy_multiplication_x: |                                        |                          |
-| OpenBSD                      | :heavy_multiplication_x: |                                        |                          |
-| openSUSE                     | :heavy_multiplication_x: |                                        |                          |
-| Plamo Linux                  | :heavy_multiplication_x: |                                        |                          |
-| Poky(Yokto)                  | :heavy_multiplication_x: |                                        |                          |
-| Red Hat Linux                | :heavy_check_mark:       | :heavy_check_mark: (6 and 7)           | :heavy_check_mark: (yum) |
-| SUSE Linux Enterprise Server | :heavy_multiplication_x: |                                        |                          |
-| SmartOS                      | :heavy_multiplication_x: |                                        |                          |
-| Solaris                      | :heavy_multiplication_x: |                                        |                          |
-| SuSE Linux                   | :heavy_multiplication_x: |                                        |                          |
-| Windows                      | :heavy_multiplication_x: |                                        |                          |
+| Platforms                    | File                     | Service                                | Package                  | Port                         |
+|------------------------------|--------------------------|----------------------------------------|--------------------------|------------------------------|
+| macOS                        | :heavy_check_mark:       |                                        |                          |                              |
+| Ubuntu                       | :heavy_check_mark:       | :heavy_check_mark: (trusty and xenial) | :heavy_check_mark: (apt) | :heavy_check_mark: (netstat) |
+| AIX                          | :heavy_multiplication_x: |                                        |                          |                              |
+| Alpine Linux                 | :heavy_multiplication_x: |                                        |                          |                              |
+| Amazon Linux                 | :heavy_multiplication_x: |                                        |                          |                              |
+| Arch Linux                   | :heavy_multiplication_x: |                                        |                          |                              |
+| CoreOS                       | :heavy_multiplication_x: |                                        |                          |                              |
+| Cumulus Linux                | :heavy_multiplication_x: |                                        |                          |                              |
+| Debian Linux                 | :heavy_multiplication_x: |                                        |                          |                              |
+| elementary OS                | :heavy_multiplication_x: |                                        |                          |                              |
+| EOS(Arista)                  | :heavy_multiplication_x: |                                        |                          |                              |
+| VMWare ESXi                  | :heavy_multiplication_x: |                                        |                          |                              |
+| Fedora                       | :heavy_multiplication_x: |                                        |                          |                              |
+| FreeBSD                      | :heavy_multiplication_x: |                                        |                          |                              |
+| Gentoo Linux                 | :heavy_multiplication_x: |                                        |                          |                              |
+| Linux MInt                   | :heavy_multiplication_x: |                                        |                          |                              |
+| NixOS                        | :heavy_multiplication_x: |                                        |                          |                              |
+| OpenBSD                      | :heavy_multiplication_x: |                                        |                          |                              |
+| openSUSE                     | :heavy_multiplication_x: |                                        |                          |                              |
+| Plamo Linux                  | :heavy_multiplication_x: |                                        |                          |                              |
+| Poky(Yokto)                  | :heavy_multiplication_x: |                                        |                          |                              |
+| Red Hat Linux                | :heavy_check_mark:       | :heavy_check_mark: (6 and 7)           | :heavy_check_mark: (yum) | :heavy_check_mark: (netstat) |
+| SUSE Linux Enterprise Server | :heavy_multiplication_x: |                                        |                          |                              |
+| SmartOS                      | :heavy_multiplication_x: |                                        |                          |                              |
+| Solaris                      | :heavy_multiplication_x: |                                        |                          |                              |
+| SuSE Linux                   | :heavy_multiplication_x: |                                        |                          |                              |
+| Windows                      | :heavy_multiplication_x: |                                        |                          |                              |
 
 ## TODO
 

@@ -16,6 +16,7 @@ use platform::error::Error;
 use platform::error::DetectError;
 use resource::file::File;
 use resource::package::Package;
+use resource::port::Port;
 use resource::service::Service;
 use provider::Providers;
 
@@ -47,6 +48,10 @@ impl<'a> Specinfra<'a> {
 
     pub fn package(&self, name: &'static str, version: Option<&'static str>) -> Package {
         Package::new(name, version, self.backend, &self.providers.package)
+    }
+
+    pub fn port(&self, number: usize) -> Port {
+        Port::new(number, self.backend, &self.providers.port)
     }
 }
 

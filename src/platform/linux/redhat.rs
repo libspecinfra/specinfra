@@ -14,6 +14,8 @@ use provider::service;
 use provider::service::ServiceProvider;
 use provider::package;
 use provider::package::PackageProvider;
+use provider::port;
+use provider::port::PortProvider;
 
 #[derive(Clone, Debug)]
 pub struct RedHat {
@@ -51,7 +53,7 @@ impl Platform for RedHat {
     }
 
     fn get_providers(&self) -> Result<Box<Providers>, Error> {
-        let fp = FileProvider {
+        let file_provider = FileProvider {
             inline: Box::new(file::inline::posix::Posix),
             shell: Box::new(file::shell::linux::Linux),
         };
@@ -59,7 +61,7 @@ impl Platform for RedHat {
         let r = Version::from(&self.release).unwrap();
         let r7 = Version::from("7").unwrap();
 
-        let sp = match r {
+        let service_provider = match r {
             ref n if n >= &r7 => {
                 ServiceProvider {
                     inline: Box::new(service::inline::systemd::Systemd),
@@ -74,15 +76,21 @@ impl Platform for RedHat {
             }
         };
 
-        let pp = PackageProvider {
+        let package_provider = PackageProvider {
             inline: Box::new(package::inline::null::Null),
             shell: Box::new(package::shell::yum::Yum),
         };
 
+        let port_provider = PortProvider {
+            inline: Box::new(port::inline::null::Null),
+            shell: Box::new(port::shell::netstat::Netstat),
+        };
+
         let p = Providers {
-            file: Box::new(fp),
-            service: Box::new(sp),
-            package: Box::new(pp),
+            file: Box::new(file_provider),
+            service: Box::new(service_provider),
+            package: Box::new(package_provider),
+            port: Box::new(port_provider),
         };
 
         Ok(Box::new(p))
